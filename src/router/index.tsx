@@ -1,16 +1,18 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import Home from './home/Home';
+import Header from '../layout/header/Header';
+import Footer from '../layout/footer/Footer';
 
 function Router() {
   return (
-    <RouterProvider
-      router={createBrowserRouter([
-        {
-          path: '/',
-          element: <h1>Root</h1>,
-        }
-      ])}
-    />
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
