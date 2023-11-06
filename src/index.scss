@@ -3,6 +3,12 @@ $color-white: #fff;
 $font-size-300: 14px;
 $font-size-400: 16px;
 
+$color-purple: #c8aaff;
+$color-green: #bafaeb;
+$color-pink: #ffbecb;
+
+$border-radius-32: 10px;
+
 :root {
   font-family: Roboto;
   line-height: 1.4;
@@ -16,4 +22,23 @@ $font-size-400: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0px;
+}
+
+.primary-button {
+  color: $color-purple;
+  border: 1px solid $color-purple;
+  font-size: $font-size-300;
+  padding: 8px 18px;
+  background-color: transparent;
+  border-radius: $border-radius-32;
+  cursor: pointer;
+  transition-duration: 200ms;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }

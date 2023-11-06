@@ -5,15 +5,31 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: #181818;
 
   .header-links {
+    display: flex;
+    flex-wrap: wrap;
     .header-link {
+      display: flex;
+      width: 166px;
       color: #b4b4b4;
       font-size: $font-size-300;
-    }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
 
-    .header-link-active {
-      color: $color-white;
+      border-bottom: 2px solid #4d4d4d;
+      padding-top: 20px;
+      padding-bottom: 12px;
+
+      &.header-link-active {
+        color: $color-white;
+
+        border-bottom: 2px solid $color-purple;
+      }
     }
   }
 }

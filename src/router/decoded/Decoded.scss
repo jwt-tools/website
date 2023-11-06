@@ -1,0 +1,15 @@
+@import '../../index.scss';
+
+.decoded {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 928px;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  .decoded-button-generate {
+    margin-left: auto;
+  }
+}
