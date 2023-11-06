@@ -1,4 +1,5 @@
 import * as jose from 'jose';
+import type { Env } from './index';
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const keysEndpoint = context.params.endpoint as string;
