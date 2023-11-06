@@ -1,0 +1,17 @@
+$background-color: #262626;
+$color-white: #fff;
+
+:root {
+  font-family: Roboto;
+  line-height: 1.4;
+  font-weight: 400;
+
+  color: $color-white;
+  background-color: $background-color;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
