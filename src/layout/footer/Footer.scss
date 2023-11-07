@@ -24,7 +24,20 @@
   img {
     max-width: 165px;
     max-height: 32px;
+    height: 100%;
+    width: 100%;
     object-fit: contain;
     margin-top: 24px;
+  }
+
+  button {
+    background-color: $color-purple;
+    padding: 12px 30px;
+    color: $color-black;
+    outline: none;
+    border: none;
+    border-radius: $border-radius-32;
+    margin-top: 24px;
+    cursor: pointer;
   }
 }
