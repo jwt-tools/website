@@ -25,7 +25,7 @@ const Encoded: React.FC<{
             const text = e.target.value.replace(/&nbsp;/g, ' ');
             console.log({ text });
             setToken(text);
-            const provider = detectProvider(token);
+            const provider = detectProvider(text);
             setProvider(provider);
             console.log('provider', provider);
           }} // handle innerHTML change
