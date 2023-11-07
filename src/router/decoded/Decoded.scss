@@ -8,8 +8,39 @@
 
   display: flex;
   flex-direction: column;
+  height: 800px;
 
   .decoded-button-generate {
     margin-left: auto;
+  }
+
+  .decoded__token {
+    position: relative;
+    width: 100%;
+    min-height: 124px;
+    background-color: #393939;
+    border-radius: $border-radius-40;
+
+    .decoded__token__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: inline;
+      pointer-events: none;
+
+      .decoded__token__overlay__header {
+        color: green;
+        display: inline;
+      }
+
+      .decoded__token__overlay__payload {
+        color: red;
+        display: inline;
+        word-break: break-all;
+        margin-left: 4px;
+      }
+    }
   }
 }

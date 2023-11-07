@@ -8,6 +8,7 @@ $color-green: #bafaeb;
 $color-pink: #ffbecb;
 
 $border-radius-32: 10px;
+$border-radius-40: 12px;
 
 :root {
   font-family: Roboto;
@@ -22,6 +23,10 @@ $border-radius-32: 10px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 body {
