@@ -1,0 +1,36 @@
+@import '../../../index.scss';
+
+.jwk_endpoint {
+  width: 100%;
+  margin-top: 24px;
+
+  &__header {
+    p {
+      font-size: 12px;
+      line-height: 1.66px;
+      color: #bafaeb;
+    }
+  }
+  &__content {
+    input {
+      background-color: #393939;
+      border: 1px solid #393939;
+      padding: 12px;
+      border-radius: $border-radius-40;
+      color: $color-white;
+      width: calc(100% - 24px);
+    }
+  }
+  &__footer {
+    p {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+    .success {
+      color: $color-success;
+    }
+    .failure {
+      color: $color-failure;
+    }
+  }
+}

@@ -6,13 +6,15 @@ import { validateToken } from '../../scripts/tokens';
 import type { JWTVerifyResult } from 'jose';
 import { TokenProvider } from '../../detector/engine';
 import History from './History/History';
+import JWKinput from './JWKInput/JWKInput';
+import Signature from './Signature/Signature';
 
 const Home: React.FC = () => {
   const [token, setToken] = useState(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT'
   );
   const [jwtVerifyResult, setJwtVerifyResult] =
-    useState<JWTVerifyResult | null>(null);
+    useState<{ verified: boolean; decoded: JWTVerifyResult} | null>(null);
   const [provider, setProvider] = useState<TokenProvider | null>(null);
 
   const header = useMemo(() => {
@@ -40,7 +42,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     (async (jwt: string) => {
       const result = await validateToken(jwt);
-      setJwtVerifyResult(result.decoded);
+      setJwtVerifyResult(result);
     })(token);
   }, [token]);
 
@@ -66,8 +68,8 @@ const Home: React.FC = () => {
         token={token}
         provider={provider}
       />
-      {JSON.stringify(jwtVerifyResult)}
-
+      <JWKinput />
+      <Signature verified={jwtVerifyResult?.verified} />
       <History />
     </div>
   );
