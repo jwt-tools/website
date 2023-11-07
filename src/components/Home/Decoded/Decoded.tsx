@@ -15,7 +15,8 @@ const Decoded: React.FC<{
   setSecret: (secret: string) => void;
 }> = ({ header, payload, setSecret }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isValidDate = useCallback((d: any): boolean => {
+  const isValidDate = useCallback((value: any): boolean => {
+    const d = new Date(value)
     return d instanceof Date && !isNaN(d.getTime());
   }, []);
 
@@ -106,16 +107,17 @@ const Decoded: React.FC<{
             {payload
               ? Object.keys(payload).map((key) => {
                   const value = payload?.[key] as string;
-                  const isDate = isValidDate(new Date(value));
+                  const isDate = isValidDate(value);
+
                   return (
                     <div
                       key={`payload-item-${key}`}
                       className="decoded__payload__content__item"
                     >
                       "{key}": {payload?.[key] as string},{' '}
-                      {isDate && (
+                      {typeof value === 'number' && isDate && (
                         <div className="decoded__payload__content__item__date">
-                          {new Date(value).toString()}
+                          {new Date(value * 1000).toString()}
                         </div>
                       )}
                     </div>
