@@ -31,7 +31,7 @@
     caret-color: $color-white;
     outline: none;
     border: none;
-    font-size: $font-size-200;
+    font-size: $font-size-500;
   }
 
   .encoded__overlay {
@@ -42,7 +42,7 @@
     bottom: 16px;
     display: inline;
     pointer-events: none;
-    font-size: $font-size-200;
+    font-size: $font-size-500;
 
     .encoded__overlay__header {
       color: $color-purple;

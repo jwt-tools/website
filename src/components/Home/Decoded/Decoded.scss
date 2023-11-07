@@ -30,9 +30,10 @@
         align-items: baseline;
         margin-bottom: 16px;
         .decoded__header__title {
-          font-size: $font-size-200;
+          font-size: $font-size-300;
           line-height: 1.66;
           color: $color-purple;
+          margin-bottom: 4px;
         }
 
         .decoded__header__content {
@@ -44,7 +45,7 @@
           color: $color-purple;
 
           code {
-            font-size: $font-size-200;
+            font-size: $font-size-300;
             line-height: 1.5;
           }
         }
@@ -60,7 +61,7 @@
 
         .tooltip {
           position: absolute;
-          top: 32px;
+          top: 38px;
           right: 12px;
           height: 14px;
           width: 14px;
@@ -76,9 +77,10 @@
         }
 
         .decoded__signature__title {
-          font-size: $font-size-200;
+          font-size: $font-size-300;
           line-height: 1.66;
           color: $color-pink;
+          margin-bottom: 4px;
         }
 
         .decoded__signature__content {
@@ -88,13 +90,13 @@
           width: calc(100% - 24px);
           padding: 12px;
           color: $color-pink;
-          font-size: $font-size-200;
+          font-size: $font-size-300;
           height: 100%;
 
           .decoded__signature__content__secret {
             outline: none;
             border: 1px solid $color-pink;
-            font-size: $font-size-200;
+            font-size: $font-size-300;
             background-color: transparent;
             color: $color-pink;
             padding: 1px 10px;
@@ -116,9 +118,10 @@
       margin-left: 8px;
       flex: 1;
       .decoded__payload__title {
-        font-size: $font-size-200;
+        font-size: $font-size-300;
         line-height: 1.66;
         color: $color-green;
+        margin-bottom: 4px;
       }
       .decoded__payload__content {
         border: 1px solid $color-green;
@@ -128,7 +131,7 @@
         border-radius: $border-radius-40;
         color: $color-green;
         height: 100%;
-        font-size: $font-size-200;
+        font-size: $font-size-300;
         line-height: 1.5;
 
         .decoded__payload__content__item {
@@ -152,7 +155,7 @@
 
       .tooltip {
         position: absolute;
-        top: 32px;
+        top: 38px;
         right: 12px;
         height: 14px;
         width: 14px;

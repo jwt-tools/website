@@ -4,12 +4,13 @@ $color-black: #000;
 $font-size-200: 0.75rem;
 $font-size-300: 0.875rem;
 $font-size-400: 1rem;
+$font-size-500: 1.125rem;
 
 $color-purple: #c8aaff;
 $color-green: #bafaeb;
 $color-pink: #ffbecb;
-$color-success: #D2FA8F;
-$color-failure: #FAC9BA;
+$color-success: #d2fa8f;
+$color-failure: #fac9ba;
 
 $border-radius-32: 10px;
 $border-radius-40: 12px;
@@ -39,7 +40,7 @@ body {
 
 h1 {
   font-weight: 700;
-  font-size: $font-size-400;
+  font-size: $font-size-500;
   color: $color-white;
   line-height: 1.375;
   margin: 0;
