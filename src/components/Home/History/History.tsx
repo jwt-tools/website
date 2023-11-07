@@ -2,14 +2,33 @@ import React from 'react';
 import './History.scss';
 import Trash from '../../../assets/trash-can.svg';
 import Edit from '../../../assets/edit.svg';
+import { getAllTokens, Token, deleteToken } from '../../../storage/db';
 
 const History: React.FC = () => {
-  const items = [{ time: '2023-11-07T20:00:07Z' }];
+  const [tokens, setTokens] = React.useState<Token[]>([]);
+
+  React.useEffect(() => {
+    (async () => {
+      const tokens = await getAllTokens();
+      setTokens(tokens);
+    })();
+  }, []);
+
+  const removeToken = (id: number) => {
+  
+    (async () => {
+      await deleteToken(id);
+      const tokens = await getAllTokens();
+      setTokens(tokens);
+    })();
+  }
+
   return (
     <div className="history">
       <h1>History</h1>
-      {items.map(({ time }) => {
-        const date = new Date(time);
+      {tokens.map((token) => {
+        const date = new Date(token.created);
+        const time = date.toISOString;
         return (
           <div key={`history-${time}`} className="history__item">
             <div className="history__item__date">
@@ -18,7 +37,10 @@ const History: React.FC = () => {
             </div>
             <div className="history__item__buttons">
               <button className="text-button">View</button>
-              <img src={Trash} />
+              <img 
+                 onClick={()=>removeToken(token.id)}
+                src={Trash} 
+              />
             </div>
           </div>
         );
