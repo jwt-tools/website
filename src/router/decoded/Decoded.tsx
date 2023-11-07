@@ -3,21 +3,31 @@ import ContentEditable from 'react-contenteditable';
 import './Decoded.scss';
 
 const Decoded: React.FC = () => {
-  const [token, setToken] = useState('random.yellow.green');
+  const [token, setToken] = useState(
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT.≤4fwpMeJf36POk6yJV_adQssw5c7Y6RT45EFDSXZ/'
+  );
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
-    return tokenSplit?.[0] ? `${tokenSplit?.[0]}.` : token;
+    console.log({ tokenSplit });
+    if (tokenSplit.length < 2) {
+      return tokenSplit?.[0] || token;
+    }
+    return `${tokenSplit?.[0]}.`;
   }, [token]);
 
   const payload = useMemo(() => {
     const tokenSplit = token.split('.');
-    return tokenSplit?.[1] ? `${tokenSplit?.[1]}` : undefined;
+
+    if (tokenSplit.length < 3) {
+      return tokenSplit?.[1] || undefined;
+    }
+    return `${tokenSplit?.[1]}.`;
   }, [token]);
 
   const signature = useMemo(() => {
-    const tokenSplit = token.split('.');
-    return tokenSplit?.[2] ? `.${tokenSplit?.[2]}` : undefined;
+    const tokenSplit = token.split('.').slice(2);
+    return tokenSplit.join('.');
   }, [token]);
 
   return (
@@ -32,17 +42,34 @@ const Decoded: React.FC = () => {
           html={token} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={(e) => {
-            const text = e.target.value;
+            const text = e.target.value.replace(/&nbsp;/g, ' ');
+            console.log({ text });
             setToken(text);
           }} // handle innerHTML change
         />
         <div className="decoded__token__overlay">
-          <div className="decoded__token__overlay__header">{header}</div>
+          <div
+            spellCheck={false}
+            autoCorrect="false"
+            className="decoded__token__overlay__header"
+          >
+            {header}
+          </div>
           {payload && (
-            <div className="decoded__token__overlay__payload">{payload}</div>
+            <div
+              spellCheck={false}
+              autoCorrect="false"
+              className="decoded__token__overlay__payload"
+            >
+              {payload}
+            </div>
           )}
           {signature && (
-            <div className="decoded__token__overlay__signature">
+            <div
+              spellCheck={false}
+              autoCorrect="false"
+              className="decoded__token__overlay__signature"
+            >
               {signature}
             </div>
           )}
