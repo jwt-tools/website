@@ -94,8 +94,8 @@ const DB_NAME = 'website-db';
 
     export async function getToken(id: number): Promise <Token | undefined > {
     
-        const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
         return new Promise((resolve, reject) => {
+            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
             dbPromise.onsuccess = () => {
                 const transaction = db.transaction('tokens', 'readonly');
                 const objectStore = transaction.objectStore('tokens');
@@ -115,21 +115,23 @@ const DB_NAME = 'website-db';
     }
 
     export async function getAllTokens(): Promise <Token []> {
-    
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction('tokens', 'readonly');
-            const objectStore = transaction.objectStore('tokens');
-            const request = objectStore.getAll();
+            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+            dbPromise.onsuccess = () => {
+                const transaction = db.transaction('tokens', 'readonly');
+                const objectStore = transaction.objectStore('tokens');
+                const request = objectStore.getAll();
 
-            request.onsuccess = () => {
-                console.info('all tokens retrieved from the database');
-                resolve(request.result);  
-            };
+                request.onsuccess = () => {
+                    console.info('all tokens retrieved from the database');
+                    resolve(request.result);  
+                };
 
-            request.onerror = (e) => {
-                console.error(`IndexedDB error retrieving all tokens: ${e}`);
-                reject(e);
-            };
+                request.onerror = (e) => {
+                    console.error(`IndexedDB error retrieving all tokens: ${e}`);
+                    reject(e);
+                };
+            }
         });
     }
 
