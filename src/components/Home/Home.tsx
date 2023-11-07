@@ -4,6 +4,7 @@ import Encoded from './Encoded/Encoded';
 import Decoded from './Decoded/Decoded';
 import { validateToken } from '../../scripts/tokens';
 import type { JWTVerifyResult } from 'jose';
+import { TokenProvider } from '../../detector/engine';
 
 const Home: React.FC = () => {
   const [token, setToken] = useState(
@@ -11,6 +12,7 @@ const Home: React.FC = () => {
   );
   const [jwtVerifyResult, setJwtVerifyResult] =
     useState<JWTVerifyResult | null>(null);
+  const [provider, setProvider] = useState<TokenProvider | null>(null);
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -53,6 +55,7 @@ const Home: React.FC = () => {
         signature={signature}
         setToken={setToken}
         token={token}
+        setProvider={setProvider}
       />
       <Decoded
         header={header}
@@ -60,6 +63,7 @@ const Home: React.FC = () => {
         signature={signature}
         setToken={setToken}
         token={token}
+        provider={provider}
       />
       {JSON.stringify(jwtVerifyResult)}
     </div>

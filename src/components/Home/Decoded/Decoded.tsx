@@ -2,10 +2,12 @@ import React, { useMemo } from 'react';
 import './Decoded.scss';
 import Copy from '../../../assets/copy-link.svg';
 import Tooltip from '../../../common/Tooltip/Tooltip';
+import { TokenProvider } from '../../../detector/engine';
 
 const Decoded: React.FC<{
   token: string;
   setToken: (e: string) => void;
+  provider: TokenProvider | null;
   header: string;
   payload?: string;
   signature: string;
@@ -34,7 +36,7 @@ const Decoded: React.FC<{
     <div className="decoded">
       <div className="decoded__header">
         <h1>Decoded</h1>
-        <button className="primary-button">JWT GPT Explained</button>
+        <button className="primary-button">Explain JWT</button>
       </div>
 
       <div className="decoded__content">

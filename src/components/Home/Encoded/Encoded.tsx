@@ -2,14 +2,16 @@ import React from 'react';
 import ContentEditable from 'react-contenteditable';
 import Tooltip from '../../../common/Tooltip/Tooltip';
 import Copy from '../../../assets/copy-link.svg';
+import { TokenProvider, detectProvider } from '../../../detector/engine';
 
 const Encoded: React.FC<{
   token: string;
   setToken: (e: string) => void;
+  setProvider: (provider: TokenProvider | null) => void;
   header: string;
   payload?: string;
   signature: string;
-}> = ({ token, setToken, header, payload, signature }) => {
+}> = ({ token, setToken, setProvider, header, payload, signature }) => {
   return (
     <>
       <h1>Encoded</h1>
@@ -22,6 +24,9 @@ const Encoded: React.FC<{
             const text = e.target.value.replace(/&nbsp;/g, ' ');
             console.log({ text });
             setToken(text);
+            const provider = detectProvider(token);
+            setProvider(provider);
+            console.log('provider', provider);
           }} // handle innerHTML change
         />
         <div className="home__encoded__overlay">
