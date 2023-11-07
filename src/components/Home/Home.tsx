@@ -52,7 +52,14 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <button className="primary-button decoded-button-generate">
-        Generate example JWT
+        Generate example
+
+        <span className="button-image">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path d="M12,10H6.78A11,11,0,0,1,27,16h2A13,13,0,0,0,6,7.68V4H4v8h8Z" fill="#C8AAFF" />
+            <path d="M20,22h5.22A11,11,0,0,1,5,16H3a13,13,0,0,0,23,8.32V28h2V20H20Z" fill="#C8AAFF" />
+          </svg>
+        </span>
       </button>
 
       <Encoded
