@@ -1,8 +1,15 @@
 
-export let db: IDBDatabase;
+let db: IDBDatabase;
+
+export type Token = {
+    id: number,
+    name: string,
+    created: Date,
+    token: string
+}
 
 //init the database
-export async function createDatabase() {
+ async function createDatabase(): Promise<IDBDatabase> {
 
     if (!indexedDBSupport()) throw new Error("Your browser doesn't support IndexedBD");
 
@@ -13,8 +20,7 @@ export async function createDatabase() {
         console.error(`IndexedDB error: ${e}`);
     };
 
-    request.onsuccess = (e: Event) => {
-        console.info(`event ${e}`);
+    request.onsuccess = () => {
         console.info('Successful database connection');
         db = request.result;
     };
@@ -33,6 +39,7 @@ export async function createDatabase() {
             objectStore.createIndex("id", "id", { unique: true }); //Does this need to be specified?
             objectStore.createIndex("name", "name", { unique: false });
             objectStore.createIndex("created", "created", { unique: false });
+            objectStore.createIndex("token", "token", { unique: false });
 
             // Transaction completed
             objectStore.transaction.oncomplete = (e: Event) => {
@@ -58,17 +65,74 @@ export async function createDatabase() {
     //    }
     
     };
-
+    return db;
 }
 
-export async function addToken(token: any) {
+export async function addToken(token: Token) {
+    if(!db){
+        db = await createDatabase();
+    }
     const transaction = db.transaction('tokens', 'readwrite');
     const objectStore = transaction.objectStore('tokens');
     const request = objectStore.add(token);
 
-    request.onsuccess = (e: Event) => {
-        console.info(`event ${e}`);
+    request.onsuccess = () => {
         console.info('Token added to the database');
+    };
+
+    request.onerror = (e: Event) => {
+        console.error(`IndexedDB error: ${e}`);
+    };
+}
+
+export async function getToken(id: number) {
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('tokens', 'readonly');
+    const objectStore = transaction.objectStore('tokens');
+    const request = objectStore.get(id);
+
+    request.onsuccess = () => {
+        console.info('Token retrieved from the database');
+        const token = request.result;
+        return token;
+    };
+
+    request.onerror = (e: Event) => {
+        console.error(`IndexedDB error: ${e}`);
+    };
+}
+
+export async function getAllTokens() {
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('tokens', 'readonly');
+    const objectStore = transaction.objectStore('tokens');
+    const request = objectStore.getAll();
+
+    request.onsuccess = () => {
+        console.info('all tokens retrieved from the database');
+        const tokens = request.result;
+        return tokens;
+    };
+
+    request.onerror = (e) => {
+        console.error(`IndexedDB error: ${e}`);
+    };
+}
+
+export async function deleteToken(id: number) {
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('tokens', 'readwrite');
+    const objectStore = transaction.objectStore('tokens');
+    const request = objectStore.delete(id);
+    
+    request.onsuccess = () => {
+        console.info('Token deleted from the database');
     };
 
     request.onerror = (e: Event) => {
@@ -79,4 +143,3 @@ export async function addToken(token: any) {
 function indexedDBSupport(){
     return 'indexedDB' in window;
 }
-
