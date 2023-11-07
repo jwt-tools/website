@@ -1,34 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ContentEditable from 'react-contenteditable';
 import Tooltip from '../../../common/Tooltip/Tooltip';
 import Copy from '../../../assets/copy-link.svg';
 
-const Encoded: React.FC<{ token: string; setToken: (e: string) => void }> = ({
-  token,
-  setToken,
-}) => {
-  const header = useMemo(() => {
-    const tokenSplit = token.split('.');
-    console.log({ tokenSplit });
-    if (tokenSplit.length < 2) {
-      return tokenSplit?.[0] || token;
-    }
-    return `${tokenSplit?.[0]}.`;
-  }, [token]);
-
-  const payload = useMemo(() => {
-    const tokenSplit = token.split('.');
-
-    if (tokenSplit.length < 3) {
-      return tokenSplit?.[1] || undefined;
-    }
-    return `${tokenSplit?.[1]}.`;
-  }, [token]);
-
-  const signature = useMemo(() => {
-    const tokenSplit = token.split('.').slice(2);
-    return tokenSplit.join('.');
-  }, [token]);
+const Encoded: React.FC<{
+  token: string;
+  setToken: (e: string) => void;
+  header: string;
+  payload?: string;
+  signature: string;
+}> = ({ token, setToken, header, payload, signature }) => {
   return (
     <>
       <h1>Encoded</h1>

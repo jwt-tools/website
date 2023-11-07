@@ -3,6 +3,9 @@ import React from 'react';
 const Decoded: React.FC<{
   token: string;
   setToken: (e: string) => void;
+  header: string;
+  payload?: string;
+  signature: string;
 }> = () => {
   return (
     <div className="home__decoded">
