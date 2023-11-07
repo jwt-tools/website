@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import JWTImage from '../../assets/JWTIS.svg';
+import Rownd from '../../assets/Rownd-white.svg';
 import './Header.scss';
 import classnames from 'classnames';
 
@@ -28,7 +29,11 @@ const Header: React.FC = () => {
           What are JWTs?
         </NavLink>
       </div>
-      <div className="header-built-by">Built by Rownd</div>
+      <NavLink target="_blank" to={'https://rownd.io/'}>
+        <div className="header-built-by">
+          Built by <img src={Rownd} alt="Rownd" />
+        </div>
+      </NavLink>
     </header>
   );
 };

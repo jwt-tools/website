@@ -1,4 +1,4 @@
-// .wrangler/tmp/bundle-698DwP/checked-fetch.js
+// ../.wrangler/tmp/bundle-3XL2rg/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -23,52 +23,7 @@ globalThis.fetch = new Proxy(globalThis.fetch, {
   }
 });
 
-// node_modules/wrangler/templates/middleware/common.ts
-var __facade_middleware__ = [];
-function __facade_register__(...args) {
-  __facade_middleware__.push(...args.flat());
-}
-function __facade_invokeChain__(request, env, ctx, dispatch, middlewareChain) {
-  const [head, ...tail] = middlewareChain;
-  const middlewareCtx = {
-    dispatch,
-    next(newRequest, newEnv) {
-      return __facade_invokeChain__(newRequest, newEnv, ctx, dispatch, tail);
-    }
-  };
-  return head(request, env, ctx, middlewareCtx);
-}
-function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
-  return __facade_invokeChain__(request, env, ctx, dispatch, [
-    ...__facade_middleware__,
-    finalMiddleware
-  ]);
-}
-
-// .wrangler/tmp/pages-efp5Va/functionsWorker-0.998804686012986.mjs
-var urls2 = /* @__PURE__ */ new Set();
-function checkURL2(request, init) {
-  const url = request instanceof URL ? request : new URL(
-    (typeof request === "string" ? new Request(request, init) : request).url
-  );
-  if (url.port && url.port !== "443" && url.protocol === "https:") {
-    if (!urls2.has(url.toString())) {
-      urls2.add(url.toString());
-      console.warn(
-        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
- - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
-`
-      );
-    }
-  }
-}
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    const [request, init] = argArray;
-    checkURL2(request, init);
-    return Reflect.apply(target, thisArg, argArray);
-  }
-});
+// api/keys.ts
 var onRequest = async ({ request }) => {
   const keysEndpoint = new URL(request.url).searchParams.get("endpoint");
   if (!keysEndpoint) {
@@ -90,10 +45,16 @@ var onRequest = async ({ request }) => {
     headers
   });
 };
+
+// ../node_modules/jose/dist/browser/runtime/webcrypto.js
 var webcrypto_default = crypto;
+
+// ../node_modules/jose/dist/browser/lib/buffer_utils.js
 var encoder = new TextEncoder();
 var decoder = new TextDecoder();
 var MAX_INT32 = 2 ** 32;
+
+// ../node_modules/jose/dist/browser/runtime/base64url.js
 var decodeBase64 = (encoded) => {
   const binary = atob(encoded);
   const bytes = new Uint8Array(binary.length);
@@ -114,7 +75,11 @@ var decode = (input) => {
     throw new TypeError("The input to be decoded is not correctly encoded.");
   }
 };
+
+// ../node_modules/jose/dist/browser/runtime/random.js
 var random_default = webcrypto_default.getRandomValues.bind(webcrypto_default);
+
+// ../node_modules/jose/dist/browser/lib/is_object.js
 function isObjectLike(value) {
   return typeof value === "object" && value !== null;
 }
@@ -131,19 +96,29 @@ function isObject(input) {
   }
   return Object.getPrototypeOf(input) === proto;
 }
+
+// ../node_modules/jose/dist/browser/jwe/flattened/encrypt.js
 var unprotected = Symbol();
+
+// ../node_modules/jose/dist/browser/lib/secs.js
 var minute = 60;
 var hour = minute * 60;
 var day = hour * 24;
 var week = day * 7;
 var year = day * 365.25;
+
+// ../node_modules/jose/dist/browser/jwks/remote.js
 var USER_AGENT;
 if (typeof navigator === "undefined" || !navigator.userAgent?.startsWith?.("Mozilla/5.0 ")) {
   const NAME = "jose";
   const VERSION = "v5.1.0";
   USER_AGENT = `${NAME}/${VERSION}`;
 }
+
+// ../node_modules/jose/dist/browser/util/base64url.js
 var decode2 = decode;
+
+// ../node_modules/jose/dist/browser/util/decode_protected_header.js
 function decodeProtectedHeader(token) {
   let protectedB64u;
   if (typeof token === "string") {
@@ -172,6 +147,8 @@ function decodeProtectedHeader(token) {
     throw new TypeError("Invalid Token or Protected Header formatting");
   }
 }
+
+// api/validate.ts
 var onRequest2 = async (context) => {
   const jwt = context.params.jwt;
   let jwtHeader;
@@ -186,6 +163,8 @@ var onRequest2 = async (context) => {
     headers
   });
 };
+
+// _middleware.ts
 var onRequestOptions = async () => {
   return new Response(null, {
     status: 204,
@@ -203,6 +182,8 @@ var onRequest3 = async ({ next }) => {
   response.headers.set("Access-Control-Max-Age", "86400");
   return response;
 };
+
+// ../.wrangler/tmp/pages-fr0GFI/functionsRoutes-0.606909279870167.mjs
 var routes = [
   {
     routePath: "/api/keys",
@@ -233,26 +214,30 @@ var routes = [
     modules: []
   }
 ];
-var __facade_middleware__2 = [];
-function __facade_register__2(...args) {
-  __facade_middleware__2.push(...args.flat());
+
+// ../node_modules/wrangler/templates/middleware/common.ts
+var __facade_middleware__ = [];
+function __facade_register__(...args) {
+  __facade_middleware__.push(...args.flat());
 }
-function __facade_invokeChain__2(request, env, ctx, dispatch, middlewareChain) {
+function __facade_invokeChain__(request, env, ctx, dispatch, middlewareChain) {
   const [head, ...tail] = middlewareChain;
   const middlewareCtx = {
     dispatch,
     next(newRequest, newEnv) {
-      return __facade_invokeChain__2(newRequest, newEnv, ctx, dispatch, tail);
+      return __facade_invokeChain__(newRequest, newEnv, ctx, dispatch, tail);
     }
   };
   return head(request, env, ctx, middlewareCtx);
 }
-function __facade_invoke__2(request, env, ctx, dispatch, finalMiddleware) {
-  return __facade_invokeChain__2(request, env, ctx, dispatch, [
-    ...__facade_middleware__2,
+function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
+  return __facade_invokeChain__(request, env, ctx, dispatch, [
+    ...__facade_middleware__,
     finalMiddleware
   ]);
 }
+
+// ../node_modules/path-to-regexp/dist.es2015/index.js
 function lexer(str) {
   var tokens = [];
   var i = 0;
@@ -550,6 +535,8 @@ function pathToRegexp(path, keys, options) {
     return arrayToRegexp(path, keys, options);
   return stringToRegexp(path, keys, options);
 }
+
+// ../node_modules/wrangler/templates/pages-template-worker.ts
 var escapeRegex = /[.+?^${}()|[\]\\]/g;
 function* executeRequest(request) {
   const requestPath = new URL(request.url).pathname;
@@ -667,6 +654,8 @@ var cloneResponse = (response) => (
     response
   )
 );
+
+// ../node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
 function reduceError(e) {
   return {
     name: e?.name,
@@ -688,6 +677,8 @@ var jsonError = async (request, env, _ctx, middlewareCtx) => {
 };
 var middleware_miniflare3_json_error_default = jsonError;
 var wrap3 = void 0;
+
+// ../.wrangler/tmp/bundle-3XL2rg/middleware-insertion-facade.js
 var envWrappers = [wrap3].filter(Boolean);
 var facade = {
   ...pages_template_worker_default,
@@ -698,6 +689,8 @@ var facade = {
   ].filter(Boolean)
 };
 var middleware_insertion_facade_default = facade;
+
+// ../.wrangler/tmp/bundle-3XL2rg/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
@@ -752,7 +745,7 @@ var facade2 = {
       if (!registeredMiddleware) {
         registeredMiddleware = true;
         for (const middleware of middleware_insertion_facade_default.middleware) {
-          __facade_register__2(middleware);
+          __facade_register__(middleware);
         }
       }
       const __facade_modules_dispatch__ = function(type, init) {
@@ -766,7 +759,7 @@ var facade2 = {
           return middleware_insertion_facade_default.scheduled(controller, env, ctx);
         }
       };
-      return __facade_invoke__2(
+      return __facade_invoke__(
         request,
         env,
         ctx,
@@ -782,128 +775,7 @@ function maskHandlerEnv(handler) {
   return (data, env, ctx) => handler(data, getMaskedEnv(env), ctx);
 }
 var middleware_loader_entry_default = facade2;
-
-// node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
-function reduceError2(e) {
-  return {
-    name: e?.name,
-    message: e?.message ?? String(e),
-    stack: e?.stack,
-    cause: e?.cause === void 0 ? void 0 : reduceError2(e.cause)
-  };
-}
-var jsonError2 = async (request, env, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env);
-  } catch (e) {
-    const error = reduceError2(e);
-    return Response.json(error, {
-      status: 500,
-      headers: { "MF-Experimental-Error-Stack": "true" }
-    });
-  }
-};
-var middleware_miniflare3_json_error_default2 = jsonError2;
-var wrap = void 0;
-
-// .wrangler/tmp/bundle-698DwP/middleware-insertion-facade.js
-var envWrappers2 = [wrap].filter(Boolean);
-var facade3 = {
-  ...middleware_loader_entry_default,
-  envWrappers: envWrappers2,
-  middleware: [
-    middleware_miniflare3_json_error_default2,
-    ...middleware_loader_entry_default.middleware ? middleware_loader_entry_default.middleware : []
-  ].filter(Boolean)
-};
-var middleware_insertion_facade_default2 = facade3;
-
-// .wrangler/tmp/bundle-698DwP/middleware-loader.entry.ts
-var __Facade_ScheduledController__2 = class {
-  constructor(scheduledTime, cron, noRetry) {
-    this.scheduledTime = scheduledTime;
-    this.cron = cron;
-    this.#noRetry = noRetry;
-  }
-  #noRetry;
-  noRetry() {
-    if (!(this instanceof __Facade_ScheduledController__2)) {
-      throw new TypeError("Illegal invocation");
-    }
-    this.#noRetry();
-  }
-};
-var __facade_modules_fetch__2 = function(request, env, ctx) {
-  if (middleware_insertion_facade_default2.fetch === void 0)
-    throw new Error("Handler does not export a fetch() function.");
-  return middleware_insertion_facade_default2.fetch(request, env, ctx);
-};
-function getMaskedEnv2(rawEnv) {
-  let env = rawEnv;
-  if (middleware_insertion_facade_default2.envWrappers && middleware_insertion_facade_default2.envWrappers.length > 0) {
-    for (const wrapFn of middleware_insertion_facade_default2.envWrappers) {
-      env = wrapFn(env);
-    }
-  }
-  return env;
-}
-var registeredMiddleware2 = false;
-var facade4 = {
-  ...middleware_insertion_facade_default2.tail && {
-    tail: maskHandlerEnv2(middleware_insertion_facade_default2.tail)
-  },
-  ...middleware_insertion_facade_default2.trace && {
-    trace: maskHandlerEnv2(middleware_insertion_facade_default2.trace)
-  },
-  ...middleware_insertion_facade_default2.scheduled && {
-    scheduled: maskHandlerEnv2(middleware_insertion_facade_default2.scheduled)
-  },
-  ...middleware_insertion_facade_default2.queue && {
-    queue: maskHandlerEnv2(middleware_insertion_facade_default2.queue)
-  },
-  ...middleware_insertion_facade_default2.test && {
-    test: maskHandlerEnv2(middleware_insertion_facade_default2.test)
-  },
-  ...middleware_insertion_facade_default2.email && {
-    email: maskHandlerEnv2(middleware_insertion_facade_default2.email)
-  },
-  fetch(request, rawEnv, ctx) {
-    const env = getMaskedEnv2(rawEnv);
-    if (middleware_insertion_facade_default2.middleware && middleware_insertion_facade_default2.middleware.length > 0) {
-      if (!registeredMiddleware2) {
-        registeredMiddleware2 = true;
-        for (const middleware of middleware_insertion_facade_default2.middleware) {
-          __facade_register__(middleware);
-        }
-      }
-      const __facade_modules_dispatch__ = function(type, init) {
-        if (type === "scheduled" && middleware_insertion_facade_default2.scheduled !== void 0) {
-          const controller = new __Facade_ScheduledController__2(
-            Date.now(),
-            init.cron ?? "",
-            () => {
-            }
-          );
-          return middleware_insertion_facade_default2.scheduled(controller, env, ctx);
-        }
-      };
-      return __facade_invoke__(
-        request,
-        env,
-        ctx,
-        __facade_modules_dispatch__,
-        __facade_modules_fetch__2
-      );
-    } else {
-      return __facade_modules_fetch__2(request, env, ctx);
-    }
-  }
-};
-function maskHandlerEnv2(handler) {
-  return (data, env, ctx) => handler(data, getMaskedEnv2(env), ctx);
-}
-var middleware_loader_entry_default2 = facade4;
 export {
-  middleware_loader_entry_default2 as default
+  middleware_loader_entry_default as default
 };
-//# sourceMappingURL=functionsWorker-0.998804686012986.js.map
+//# sourceMappingURL=functionsWorker-0.7352598396911121.mjs.map

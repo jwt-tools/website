@@ -45,10 +45,17 @@ header {
     font-size: $font-size-400;
     color: $color-white;
     line-height: 1.5;
+
+    img {
+      height: 16px;
+      width: 82.4px;
+      margin-left: 4px;
+    }
     white-space: nowrap;
     margin-top: 13px;
     margin-right: 24px;
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
 }
