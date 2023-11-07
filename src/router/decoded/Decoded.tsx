@@ -7,12 +7,17 @@ const Decoded: React.FC = () => {
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
-    return tokenSplit?.[0] || token;
+    return tokenSplit?.[0] ? `${tokenSplit?.[0]}.` : token;
   }, [token]);
 
   const payload = useMemo(() => {
     const tokenSplit = token.split('.');
-    return tokenSplit?.[1];
+    return tokenSplit?.[1] ? `${tokenSplit?.[1]}` : undefined;
+  }, [token]);
+
+  const signature = useMemo(() => {
+    const tokenSplit = token.split('.');
+    return tokenSplit?.[2] ? `.${tokenSplit?.[2]}` : undefined;
   }, [token]);
 
   return (
@@ -23,6 +28,7 @@ const Decoded: React.FC = () => {
       <h1>Encoded</h1>
       <div className="decoded__token">
         <ContentEditable
+          className="decoded__token__editable"
           html={token} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={(e) => {
@@ -34,6 +40,11 @@ const Decoded: React.FC = () => {
           <div className="decoded__token__overlay__header">{header}</div>
           {payload && (
             <div className="decoded__token__overlay__payload">{payload}</div>
+          )}
+          {signature && (
+            <div className="decoded__token__overlay__signature">
+              {signature}
+            </div>
           )}
         </div>
       </div>

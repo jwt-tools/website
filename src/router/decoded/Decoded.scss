@@ -21,25 +21,40 @@
     background-color: #393939;
     border-radius: $border-radius-40;
 
+    .decoded__token__editable {
+      height: calc(100% - 32px);
+      padding: 16px;
+      color: transparent;
+      caret-color: $color-white;
+      outline: none;
+      border: none;
+    }
+
     .decoded__token__overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
       display: inline;
       pointer-events: none;
 
       .decoded__token__overlay__header {
-        color: green;
+        color: $color-purple;
         display: inline;
+        word-break: break-all;
       }
 
       .decoded__token__overlay__payload {
-        color: red;
+        color: $color-green;
         display: inline;
         word-break: break-all;
-        margin-left: 4px;
+      }
+
+      .decoded__token__overlay__signature {
+        color: $color-pink;
+        display: inline;
+        word-break: break-all;
       }
     }
   }
