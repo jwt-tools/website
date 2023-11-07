@@ -29,7 +29,7 @@ export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPay
   }
 
   const result = (fulfilled[0] as PromiseFulfilledResult<JWTVerifyResult<JWTPayload>>).value;
-  console.log('Validated token', { result });
+  console.log('Validated token', result);
   return result;
 }
 

@@ -1,12 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './Home.scss';
 import Encoded from './Encoded/Encoded';
 import Decoded from './Decoded/Decoded';
+import { validateToken } from '../../scripts/tokens';
+import type { JWTVerifyResult } from 'jose';
 
 const Home: React.FC = () => {
   const [token, setToken] = useState(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT.≤4fwpMeJf36POk6yJV_adQssw5c7Y6RT45EFDSXZ/'
   );
+  const [jwtVerifyResult, setJwtVerifyResult] = useState<JWTVerifyResult | null>(null);
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -30,6 +33,14 @@ const Home: React.FC = () => {
     return tokenSplit.join('.');
   }, [token]);
 
+
+  useEffect(() => {
+    (async (jwt: string) => {
+      const result = await validateToken(jwt);
+      setJwtVerifyResult(result);
+    })(token);
+  }, [token]);
+
   return (
     <div className="home">
       <button className="primary-button decoded-button-generate">
@@ -50,6 +61,7 @@ const Home: React.FC = () => {
         setToken={setToken}
         token={token}
       />
+      {JSON.stringify(jwtVerifyResult)}
     </div>
   );
 };
