@@ -1,7 +1,10 @@
-import type { JWK, JWTVerifyResult, JWTPayload } from 'jose';
-import { importJWK, jwtVerify } from 'jose';
+import type { JWK, JWTVerifyResult, JWTPayload, JWTHeaderParameters } from 'jose';
+import { decodeJwt, decodeProtectedHeader, importJWK, jwtVerify } from 'jose';
 
-export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPayload>> {
+export async function validateToken(jwt: string): Promise<{
+  verified: boolean;
+  decoded: JWTVerifyResult<JWTPayload>;
+}> {
   // TODO:[Racheal] Get key by ID from storage
   // let jwtHeader: ProtectedHeaderParameters | undefined;
   // try {
@@ -11,10 +14,19 @@ export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPay
   // }
 
   // const jwks = storage.getKeysByKid(jwtHeader.kid)
+  const deocdedHeader = decodeProtectedHeader(jwt) as JWTHeaderParameters;
+  const decodedPayload = decodeJwt(jwt);
+  const decodedResponse: JWTVerifyResult = {
+    protectedHeader: deocdedHeader,
+    payload: decodedPayload,
+  };
 
   const jwks = (JSON.parse(localStorage.getItem('keys') || '[]') as JWK[]);
   if (jwks.length === 0) {
-    throw new Error('No matching JWKs found');
+    return {
+      verified: false,
+      decoded: decodedResponse,
+    };
   }
 
   const settled = await Promise.allSettled(jwks.map((key) => {
@@ -25,12 +37,19 @@ export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPay
   const fulfilled = settled.filter((result) => result.status === 'fulfilled');
 
   if (fulfilled.length === 0) {
-    throw new Error((rejected[0] as PromiseRejectedResult).reason);
+    console.error((rejected[0] as PromiseRejectedResult).reason);
+    return {
+      verified: false,
+      decoded: decodedResponse,
+    };
   }
 
   const result = (fulfilled[0] as PromiseFulfilledResult<JWTVerifyResult<JWTPayload>>).value;
   console.log('Validated token', result);
-  return result;
+  return {
+    verified: true,
+    decoded: decodedResponse,
+  };
 }
 
 async function importJwkAndVerify(jwt: string, key: JWK): Promise<JWTVerifyResult<JWTPayload>> {

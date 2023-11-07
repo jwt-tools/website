@@ -4,12 +4,16 @@ import Encoded from './Encoded/Encoded';
 import Decoded from './Decoded/Decoded';
 import { validateToken } from '../../scripts/tokens';
 import type { JWTVerifyResult } from 'jose';
+import { TokenProvider } from '../../detector/engine';
+import History from './History/History';
 
 const Home: React.FC = () => {
   const [token, setToken] = useState(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT.≤4fwpMeJf36POk6yJV_adQssw5c7Y6RT45EFDSXZ/'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT'
   );
-  const [jwtVerifyResult, setJwtVerifyResult] = useState<JWTVerifyResult | null>(null);
+  const [jwtVerifyResult, setJwtVerifyResult] =
+    useState<JWTVerifyResult | null>(null);
+  const [provider, setProvider] = useState<TokenProvider | null>(null);
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -33,11 +37,10 @@ const Home: React.FC = () => {
     return tokenSplit.join('.');
   }, [token]);
 
-
   useEffect(() => {
     (async (jwt: string) => {
       const result = await validateToken(jwt);
-      setJwtVerifyResult(result);
+      setJwtVerifyResult(result.decoded);
     })(token);
   }, [token]);
 
@@ -53,6 +56,7 @@ const Home: React.FC = () => {
         signature={signature}
         setToken={setToken}
         token={token}
+        setProvider={setProvider}
       />
       <Decoded
         header={header}
@@ -60,8 +64,11 @@ const Home: React.FC = () => {
         signature={signature}
         setToken={setToken}
         token={token}
+        provider={provider}
       />
       {JSON.stringify(jwtVerifyResult)}
+
+      <History />
     </div>
   );
 };
