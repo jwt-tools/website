@@ -136,18 +136,21 @@ const DB_NAME = 'website-db';
     }
 
     export async function deleteToken(id: number) {
-        
-        const transaction = db.transaction('tokens', 'readwrite');
-        const objectStore = transaction.objectStore('tokens');
-        const request = objectStore.delete(id);
-        
-        request.onsuccess = () => {
-            console.info('Token deleted from the database');
-        };
+        const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+        dbPromise.onsuccess = () => {
+            db = dbPromise.result;
+            const transaction = db.transaction('tokens', 'readwrite');
+            const objectStore = transaction.objectStore('tokens');
+            const request = objectStore.delete(id);
+            
+            request.onsuccess = () => {
+                console.info('Token deleted from the database');
+            };
 
-        request.onerror = (e: Event) => {
-            console.error(`IndexedDB error deleting token: ${e}`);
-        };
+            request.onerror = (e: Event) => {
+                console.error(`IndexedDB error deleting token: ${e}`);
+            };
+        }
     }
 
     // KEYS
