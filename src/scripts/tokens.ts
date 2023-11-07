@@ -1,7 +1,10 @@
 import type { JWK, JWTVerifyResult, JWTPayload, JWTHeaderParameters } from 'jose';
 import { decodeJwt, decodeProtectedHeader, importJWK, jwtVerify } from 'jose';
 
-export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPayload>> {
+export async function validateToken(jwt: string): Promise<{
+  verified: boolean;
+  decoded: JWTVerifyResult<JWTPayload>;
+}> {
   // TODO:[Racheal] Get key by ID from storage
   // let jwtHeader: ProtectedHeaderParameters | undefined;
   // try {
@@ -20,7 +23,10 @@ export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPay
 
   const jwks = (JSON.parse(localStorage.getItem('keys') || '[]') as JWK[]);
   if (jwks.length === 0) {
-    return decodedResponse;
+    return {
+      verified: false,
+      decoded: decodedResponse,
+    };
   }
 
   const settled = await Promise.allSettled(jwks.map((key) => {
@@ -32,12 +38,18 @@ export async function validateToken(jwt: string): Promise<JWTVerifyResult<JWTPay
 
   if (fulfilled.length === 0) {
     console.error((rejected[0] as PromiseRejectedResult).reason);
-    return decodedResponse;
+    return {
+      verified: false,
+      decoded: decodedResponse,
+    };
   }
 
   const result = (fulfilled[0] as PromiseFulfilledResult<JWTVerifyResult<JWTPayload>>).value;
   console.log('Validated token', result);
-  return decodedResponse;
+  return {
+    verified: true,
+    decoded: decodedResponse,
+  };
 }
 
 async function importJwkAndVerify(jwt: string, key: JWK): Promise<JWTVerifyResult<JWTPayload>> {
