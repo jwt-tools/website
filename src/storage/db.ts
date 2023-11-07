@@ -8,6 +8,11 @@ export type Token = {
     token: string
 }
 
+export type Jwk = {
+    kid: string,
+    key: string, //stringified jwk
+}
+
 //init the database
  async function createDatabase(): Promise<IDBDatabase> {
 
@@ -42,32 +47,30 @@ export type Token = {
             objectStore.createIndex("token", "token", { unique: false });
 
             // Transaction completed
-            objectStore.transaction.oncomplete = (e: Event) => {
-                console.info(`event ${e}`);
+            objectStore.transaction.oncomplete = () => {
                 console.info('object store created: tokens');
             }
         }
 
-        //TODO - Create an object store for keys
         // Create an object store for keys
-    //    if(!db.objectStoreNames.contains('keys')){
-    //         const objectStore = db.createObjectStore('keys', { keyPath: 'kid'});
+       if(!db.objectStoreNames.contains('keys')){
+            const objectStore = db.createObjectStore('keys', { keyPath: 'kid'});
 
-    //         // Create indexes
-    //         objectStore.createIndex("kid", "kid", { unique: true }); 
-    //         // jwk props
+            // Create indexes for jwk props
+            objectStore.createIndex("kid", "kid", { unique: true }); 
+            objectStore.createIndex("key", "key", { unique: false });
  
-    //         // Transaction completed
-    //         objectStore.transaction.oncomplete = (e: Event) => {
-    //             console.info(`event ${e}`);
-    //             console.info('object store created: keys');
-    //         }
-    //    }
+            // Transaction completed
+            objectStore.transaction.oncomplete = () => {
+                console.info('object store created: keys');
+            }
+       }
     
     };
     return db;
 }
 
+// TOKENS
 export async function addToken(token: Token) {
     if(!db){
         db = await createDatabase();
@@ -81,7 +84,7 @@ export async function addToken(token: Token) {
     };
 
     request.onerror = (e: Event) => {
-        console.error(`IndexedDB error: ${e}`);
+        console.error(`IndexedDB error adding token: ${e}`);
     };
 }
 
@@ -100,7 +103,7 @@ export async function getToken(id: number) {
     };
 
     request.onerror = (e: Event) => {
-        console.error(`IndexedDB error: ${e}`);
+        console.error(`IndexedDB error retrieving token: ${e}`);
     };
 }
 
@@ -119,7 +122,7 @@ export async function getAllTokens() {
     };
 
     request.onerror = (e) => {
-        console.error(`IndexedDB error: ${e}`);
+        console.error(`IndexedDB error retrieving all tokens: ${e}`);
     };
 }
 
@@ -136,8 +139,67 @@ export async function deleteToken(id: number) {
     };
 
     request.onerror = (e: Event) => {
-        console.error(`IndexedDB error: ${e}`);
+        console.error(`IndexedDB error deleting token: ${e}`);
     };
+}
+
+// KEYS
+
+export async function addKey(jwk: Jwk) {
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('keys', 'readwrite');
+    const objectStore = transaction.objectStore('keys');
+    const request = objectStore.add(jwk);
+
+    request.onsuccess = () => {
+        console.info('Key added to the database');
+    };
+
+    request.onerror = (e: Event) => {
+        console.error(`IndexedDB error adding key: ${e}`);
+    };
+}
+
+export async function getKey(kid: string) {
+
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('keys', 'readonly');
+    const objectStore = transaction.objectStore('keys');
+    const request = objectStore.get(kid);
+
+    request.onsuccess = () => {
+        console.info('Key retrieved from the database');
+        const key = request.result;
+        return key;
+    };
+
+    request.onerror = (e: Event) => {
+        console.error(`IndexedDB error retrieving key: ${e}`);
+    };
+}
+
+export async function getAllKeys() {
+    if(!db){
+        db = await createDatabase();
+    }
+    const transaction = db.transaction('keys', 'readonly');
+    const objectStore = transaction.objectStore('keys');
+    const request = objectStore.getAll();
+
+    request.onsuccess = () => {
+        console.info('all keys retrieved from the database');
+        const keys = request.result;
+        return keys;
+    };
+
+    request.onerror = (e) => {
+        console.error(`IndexedDB error retrieving all keys: ${e}`);
+    };
+    
 }
 
 function indexedDBSupport(){
