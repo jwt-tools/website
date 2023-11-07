@@ -5,6 +5,7 @@ import Decoded from './Decoded/Decoded';
 import { validateToken } from '../../scripts/tokens';
 import type { JWTVerifyResult } from 'jose';
 import { TokenProvider } from '../../detector/engine';
+import History from './History/History';
 
 const Home: React.FC = () => {
   const [token, setToken] = useState(
@@ -66,6 +67,8 @@ const Home: React.FC = () => {
         provider={provider}
       />
       {JSON.stringify(jwtVerifyResult)}
+
+      <History />
     </div>
   );
 };
