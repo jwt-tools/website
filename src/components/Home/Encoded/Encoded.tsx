@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Tooltip from '../../../common/Tooltip/Tooltip';
 import Copy from '../../../assets/copy-link.svg';
@@ -13,21 +13,33 @@ const Encoded: React.FC<{
   payload?: string;
   signature: string;
 }> = ({ token, setToken, setProvider, header, payload, signature }) => {
+  const setText = useCallback(
+    (text: string) => {
+      text = text.replace(/&nbsp;/g, ' ');
+      setToken(text);
+      const provider = detectProvider(text);
+      setProvider(provider);
+    },
+    [setProvider, setToken]
+  );
+
   return (
     <>
       <h1>Encoded</h1>
       <div className="encoded">
         <ContentEditable
           className="encoded__editable"
+          onPaste={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const text = e.clipboardData.getData('text/plain');
+            setText(text);
+          }}
           html={token} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={(e) => {
-            const text = e.target.value.replace(/&nbsp;/g, ' ');
-            console.log({ text });
-            setToken(text);
-            const provider = detectProvider(text);
-            setProvider(provider);
-            console.log('provider', provider);
+            const text = e.target.value;
+            setText(text);
           }} // handle innerHTML change
         />
         <div className="encoded__overlay">
