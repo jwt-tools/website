@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './Decoded.scss';
 import Copy from '../../../assets/copy-link.svg';
 import Tooltip from '../../../common/Tooltip/Tooltip';
@@ -13,6 +13,11 @@ const Decoded: React.FC<{
   payload?: JWTPayload;
   signature: string;
 }> = ({ header, payload }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isValidDate = useCallback((d: any): boolean => {
+    return d instanceof Date && !isNaN(d.getTime());
+  }, []);
+
   return (
     <div className="decoded">
       <div className="decoded__header">
@@ -63,9 +68,28 @@ const Decoded: React.FC<{
         <div className="decoded__payload">
           <div className="decoded__payload__title">Payload data</div>
           <div className="decoded__payload__content">
-            <pre>
-              <code>{JSON.stringify(payload, null, 4)}</code>
-            </pre>
+            {`{`}
+            <br />
+            {payload
+              ? Object.keys(payload).map((key) => {
+                  const value = payload?.[key] as string;
+                  const isDate = isValidDate(new Date(value));
+                  return (
+                    <div
+                      key={`payload-item-${key}`}
+                      className="decoded__payload__content__item"
+                    >
+                      "{key}": {payload?.[key] as string},{' '}
+                      {isDate && (
+                        <div className="decoded__payload__content__item__date">
+                          {new Date(value).toString()}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              : 'Invalid payload'}
+            {`}`}
           </div>
           <Tooltip
             tooltipContent="Copy"
