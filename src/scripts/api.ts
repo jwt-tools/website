@@ -3,6 +3,7 @@ import ky from 'ky';
 const api = ky.extend({
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
   retry: {
     limit: 2,

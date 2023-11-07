@@ -5,7 +5,7 @@ import { loadKeys } from './scripts/tokens';
 
 function App() {
   loadKeys('https://www.googleapis.com/oauth2/v3/certs');
-  
+
   return (
     <BrowserRouter>
       <Header />
