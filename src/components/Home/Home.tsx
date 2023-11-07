@@ -9,7 +9,8 @@ const Home: React.FC = () => {
   const [token, setToken] = useState(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT'
   );
-  const [jwtVerifyResult, setJwtVerifyResult] = useState<{ verified: boolean; decoded: JWTVerifyResult } | null>(null);
+  const [jwtVerifyResult, setJwtVerifyResult] =
+    useState<JWTVerifyResult | null>(null);
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -33,11 +34,10 @@ const Home: React.FC = () => {
     return tokenSplit.join('.');
   }, [token]);
 
-
   useEffect(() => {
     (async (jwt: string) => {
       const result = await validateToken(jwt);
-      setJwtVerifyResult(result);
+      setJwtVerifyResult(result.decoded);
     })(token);
   }, [token]);
 
