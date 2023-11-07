@@ -1,0 +1,24 @@
+@import '../../../index.scss';
+
+.community {
+  width: 100%;
+  margin-top: 48px;
+  .community__content {
+    padding: 16px;
+    padding-left: 24px;
+    border: 1px solid $color-purple;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: $border-radius-40;
+
+    button {
+      background-color: $color-purple;
+      color: $color-black;
+      padding: 10px 28px;
+      outline: none;
+      border: none;
+    }
+  }
+}
