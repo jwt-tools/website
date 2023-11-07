@@ -10,12 +10,7 @@ export type Token = {
 
 export type Jwk = {
     kid: string,
-    kty: string,
-    alg: string,
-    use: string,
-    x5c: string[],
-    n: string,
-    e: string
+    key: string, //stringified jwk
 }
 
 //init the database
@@ -63,12 +58,7 @@ export type Jwk = {
 
             // Create indexes for jwk props
             objectStore.createIndex("kid", "kid", { unique: true }); 
-            objectStore.createIndex("kty", "kty", { unique: false });
-            objectStore.createIndex("alg", "alg", { unique: false });
-            objectStore.createIndex("use", "use", { unique: false });
-            objectStore.createIndex("x5c", "x5c", { unique: false }); 
-            objectStore.createIndex("n", "n", { unique: false }); 
-            objectStore.createIndex("e", "e", { unique: false });
+            objectStore.createIndex("key", "key", { unique: false });
  
             // Transaction completed
             objectStore.transaction.oncomplete = () => {
