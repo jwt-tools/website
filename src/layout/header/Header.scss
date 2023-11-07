@@ -7,6 +7,12 @@ header {
   justify-content: space-between;
   background-color: #181818;
 
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
   .header-img {
     object-fit: contain;
     max-height: 20px;
