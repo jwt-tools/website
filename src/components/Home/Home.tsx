@@ -64,8 +64,8 @@ const Home: React.FC = () => {
         setProvider={setProvider}
       />
       <Decoded
-        header={header}
-        payload={payload}
+        header={jwtVerifyResult?.decoded.protectedHeader}
+        payload={jwtVerifyResult?.decoded.payload}
         signature={signature}
         setToken={setToken}
         token={token}

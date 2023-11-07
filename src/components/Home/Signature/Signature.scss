@@ -1,8 +1,17 @@
+@import '../../../index.scss';
+
 .signature {
-  .success {
+  border-radius: $border-radius-40;
+  padding: 8px;
+  width: 300px;
+  margin: 0 auto;
+
+  &.success {
     color: $color-success;
+    border: 1px solid $color-success;
   }
-  .failure {
+  &.failure {
     color: $color-failure;
+    border: 1px solid $color-failure;
   }
 }

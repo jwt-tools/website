@@ -1,37 +1,18 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import './Decoded.scss';
 import Copy from '../../../assets/copy-link.svg';
 import Tooltip from '../../../common/Tooltip/Tooltip';
 import { TokenProvider } from '../../../detector/engine';
+import { JWTHeaderParameters, JWTPayload } from 'jose';
 
 const Decoded: React.FC<{
   token: string;
   setToken: (e: string) => void;
   provider: TokenProvider | null;
-  header: string;
-  payload?: string;
+  header?: JWTHeaderParameters;
+  payload?: JWTPayload;
   signature: string;
 }> = ({ header, payload }) => {
-  const headerObject = useMemo(() => {
-    const formatedHeader = header.replace(/\./g, '');
-    try {
-      const decodedString = atob(formatedHeader);
-      return JSON.parse(decodedString);
-    } catch {
-      return { error: 'Decoding header' };
-    }
-  }, [header]);
-
-  const payloadObject = useMemo(() => {
-    if (!payload) return { error: 'Missing payload' };
-    const formattedPayload = payload.replace(/\./g, '');
-    try {
-      const decodedString = atob(formattedPayload);
-      return JSON.parse(decodedString);
-    } catch {
-      return { error: 'Decoding payload' };
-    }
-  }, [payload]);
   return (
     <div className="decoded">
       <div className="decoded__header">
@@ -45,7 +26,7 @@ const Decoded: React.FC<{
             <div className="decoded__header__title">Header and token type</div>
             <div className="decoded__header__content">
               <pre>
-                <code>{JSON.stringify(headerObject, null, 4)}</code>
+                <code>{JSON.stringify(header, null, 4)}</code>
               </pre>
             </div>
           </div>
@@ -83,7 +64,7 @@ const Decoded: React.FC<{
           <div className="decoded__payload__title">Payload data</div>
           <div className="decoded__payload__content">
             <pre>
-              <code>{JSON.stringify(payloadObject, null, 4)}</code>
+              <code>{JSON.stringify(payload, null, 4)}</code>
             </pre>
           </div>
           <Tooltip
@@ -91,7 +72,7 @@ const Decoded: React.FC<{
             label={
               <img
                 onClick={() =>
-                  navigator.clipboard.writeText(JSON.stringify(payloadObject))
+                  navigator.clipboard.writeText(JSON.stringify(payload))
                 }
                 src={Copy}
                 className="home__encoded__copy"
