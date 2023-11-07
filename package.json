@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:client": "vite",
+    "dev:server": "wrangler pages dev --port 5175 dist",
+    "dev": "concurrently npm:dev:server npm:dev:client",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -23,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
+    "concurrently": "^8.2.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
