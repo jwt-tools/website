@@ -1,6 +1,6 @@
 @import '../../index.scss';
 
-.decoded {
+.home {
   margin-left: auto;
   margin-right: auto;
   max-width: 928px;
@@ -12,16 +12,34 @@
 
   .decoded-button-generate {
     margin-left: auto;
+    margin-bottom: -16px;
   }
 
-  .decoded__token {
+  .home__encoded {
     position: relative;
     width: 100%;
     min-height: 124px;
     background-color: #393939;
     border-radius: $border-radius-40;
 
-    .decoded__token__editable {
+    .tooltip {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      height: 14px;
+      width: 14px;
+      .home__encoded__copy {
+        cursor: pointer;
+        filter: invert(88%) sepia(0%) saturate(6705%) hue-rotate(83deg)
+          brightness(104%) contrast(104%);
+
+        &:active {
+          opacity: 0.7;
+        }
+      }
+    }
+
+    .home__encoded__editable {
       height: calc(100% - 32px);
       padding: 16px;
       color: transparent;
@@ -30,7 +48,7 @@
       border: none;
     }
 
-    .decoded__token__overlay {
+    .home__encoded__overlay {
       position: absolute;
       top: 16px;
       left: 16px;
@@ -39,23 +57,35 @@
       display: inline;
       pointer-events: none;
 
-      .decoded__token__overlay__header {
+      .home__encoded__overlay__header {
         color: $color-purple;
         display: inline;
         word-break: break-all;
       }
 
-      .decoded__token__overlay__payload {
+      .home__encoded__overlay__payload {
         color: $color-green;
         display: inline;
         word-break: break-all;
       }
 
-      .decoded__token__overlay__signature {
+      .home__encoded__overlay__signature {
         color: $color-pink;
         display: inline;
         word-break: break-all;
       }
+    }
+  }
+
+  .home__decoded {
+    width: 100%;
+    margin-top: 24px;
+
+    .home__decoded__header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }

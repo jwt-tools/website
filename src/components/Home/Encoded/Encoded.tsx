@@ -1,12 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import ContentEditable from 'react-contenteditable';
-import './Decoded.scss';
+import Tooltip from '../../../common/Tooltip/Tooltip';
+import Copy from '../../../assets/copy-link.svg';
 
-const Decoded: React.FC = () => {
-  const [token, setToken] = useState(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT.≤4fwpMeJf36POk6yJV_adQssw5c7Y6RT45EFDSXZ/'
-  );
-
+const Encoded: React.FC<{ token: string; setToken: (e: string) => void }> = ({
+  token,
+  setToken,
+}) => {
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
     console.log({ tokenSplit });
@@ -29,16 +29,12 @@ const Decoded: React.FC = () => {
     const tokenSplit = token.split('.').slice(2);
     return tokenSplit.join('.');
   }, [token]);
-
   return (
-    <div className="decoded">
-      <button className="primary-button decoded-button-generate">
-        Generate example JWT
-      </button>
+    <>
       <h1>Encoded</h1>
-      <div className="decoded__token">
+      <div className="home__encoded">
         <ContentEditable
-          className="decoded__token__editable"
+          className="home__encoded__editable"
           html={token} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={(e) => {
@@ -47,11 +43,11 @@ const Decoded: React.FC = () => {
             setToken(text);
           }} // handle innerHTML change
         />
-        <div className="decoded__token__overlay">
+        <div className="home__encoded__overlay">
           <div
             spellCheck={false}
             autoCorrect="false"
-            className="decoded__token__overlay__header"
+            className="home__encoded__overlay__header"
           >
             {header}
           </div>
@@ -59,7 +55,7 @@ const Decoded: React.FC = () => {
             <div
               spellCheck={false}
               autoCorrect="false"
-              className="decoded__token__overlay__payload"
+              className="home__encoded__overlay__payload"
             >
               {payload}
             </div>
@@ -68,15 +64,26 @@ const Decoded: React.FC = () => {
             <div
               spellCheck={false}
               autoCorrect="false"
-              className="decoded__token__overlay__signature"
+              className="home__encoded__overlay__signature"
             >
               {signature}
             </div>
           )}
         </div>
+
+        <Tooltip
+          tooltipContent="Copy"
+          label={
+            <img
+              onClick={() => navigator.clipboard.writeText(token)}
+              src={Copy}
+              className="home__encoded__copy"
+            />
+          }
+        />
       </div>
-    </div>
+    </>
   );
 };
 
-export default Decoded;
+export default Encoded;

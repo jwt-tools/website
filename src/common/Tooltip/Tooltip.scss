@@ -1,0 +1,63 @@
+@import '../../index.scss';
+
+.tooltip {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  &.tooltip-callback {
+    cursor: pointer;
+  }
+
+  .tooltip__content-container {
+    visibility: hidden;
+    max-width: 270px;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 16px;
+    padding-bottom: 8px;
+
+    .tooltip__content {
+      background-color: #181818;
+      color: $color-white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: $font-size-300;
+      width: max-content;
+
+      font-size: $font-size-300;
+      font-weight: 400;
+
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
+      justify-content: space-between;
+
+      a {
+        color: #dac7ff !important;
+      }
+
+      .tooltip__content-arrow {
+        content: ' ';
+        position: absolute;
+        top: calc(100% - 8px); /* At the bottom of the tooltip */
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #181818 transparent transparent transparent;
+      }
+    }
+  }
+
+  &:hover {
+    .tooltip__content-container {
+      visibility: visible;
+    }
+  }
+}

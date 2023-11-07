@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import JWTImage from '../../assets/JWTIS.svg';
 import './Header.scss';
 import classnames from 'classnames';
 
@@ -7,7 +8,10 @@ const Header: React.FC = () => {
   const { pathname } = useLocation();
   return (
     <header>
-      <img src="" alt="logo" />
+      <NavLink to={'/'}>
+        <img className="header-img" src={JWTImage} alt="logo" />
+      </NavLink>
+
       <div className="header-links">
         <NavLink
           className={classnames('header-link', {
@@ -15,7 +19,7 @@ const Header: React.FC = () => {
           })}
           to={'/'}
         >
-          JWT Decoded
+          JWT Debugger
         </NavLink>
         <NavLink className={'header-link'} to={'/history'}>
           History
@@ -24,7 +28,7 @@ const Header: React.FC = () => {
           What are JWTs?
         </NavLink>
       </div>
-      <div>Built by Rownd</div>
+      <div className="header-built-by">Built by Rownd</div>
     </header>
   );
 };
