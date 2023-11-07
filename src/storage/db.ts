@@ -13,12 +13,15 @@ export type Jwk = {
     key: string, //stringified jwk
 }
 
+const DB_VERSION = 2;
+const DB_NAME = 'website-db';
+
 //init the database
 export async function createDatabase() {
 
     if (!indexedDBSupport()) throw new Error("Your browser doesn't support IndexedBD");
 
-    const request = window.indexedDB.open('website-db', 2);
+    const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
     // Event handling
     request.onerror = (e: Event) => {
@@ -71,17 +74,22 @@ export async function createDatabase() {
 // TOKENS
 export async function addToken(token: Token) {
    
-    const transaction = db.transaction('tokens', 'readwrite');
-    const objectStore = transaction.objectStore('tokens');
-    const request = objectStore.add(token);
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+        db = dbPromise.result;
 
-    request.onsuccess = () => {
-        console.info('Token added to the database');
-    };
+        const transaction = db.transaction('tokens', 'readwrite');
+        const objectStore = transaction.objectStore('tokens');
+        const request = objectStore.add(token);
 
-    request.onerror = (e: Event) => {
-        console.error(`IndexedDB error adding token: ${e}`);
-    };
+        request.onsuccess = () => {
+            console.info('Token added to the database');
+        };
+
+        request.onerror = (e: Event) => {
+            console.error(`IndexedDB error adding token: ${e}`);
+        };
+    }
 }
 
 export async function getToken(id: number) {
@@ -137,7 +145,7 @@ export async function deleteToken(id: number) {
 
 export async function addKey(jwk: Jwk) {
    
-    const dbPromise = window.indexedDB.open('website-db', 2);
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
     dbPromise.onsuccess = () => {
         db = dbPromise.result;
 
@@ -159,21 +167,23 @@ export async function addKey(jwk: Jwk) {
 
 export async function getKey(kid: string): Promise <Jwk | undefined >{
 
-    // if(!db){
-    //     db = await createDatabase();
-    // }
-    const transaction = db.transaction('keys', 'readonly');
-    const objectStore = transaction.objectStore('keys');
-    const request = objectStore.get(kid);
     let key;
-    request.onsuccess = () => {
-        console.info('Key retrieved from the database');
-         key = request.result;  
-    };
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+        db = dbPromise.result;
+        const transaction = db.transaction('keys', 'readonly');
+        const objectStore = transaction.objectStore('keys');
+        const request = objectStore.get(kid);
+       
+        request.onsuccess = () => {
+            console.info('Key retrieved from the database');
+            key = request.result;  
+        };
 
-    request.onerror = (e: Event) => {
-        console.error(`IndexedDB error retrieving key: ${e}`);
-    };
+        request.onerror = (e: Event) => {
+            console.error(`IndexedDB error retrieving key: ${e}`);
+        };
+    }
     return key;
 }
 
