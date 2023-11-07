@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev:client": "vite",
-    "dev:server": "wrangler pages dev --port 5175 dist",
+    "dev:server": "wrangler pages dev --inspector-port 9338 --port 5175 dist",
     "dev": "concurrently npm:dev:server npm:dev:client",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
