@@ -1,0 +1,30 @@
+@import '../../index.scss';
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #1f1f1f;
+  padding: 64px 0px;
+
+  .footer__title {
+    font-size: $font-size-400;
+    font-weight: 700;
+    line-height: 1.375;
+  }
+
+  .footer__subtitle {
+    font-size: $font-size-300;
+    max-width: 600px;
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  img {
+    max-width: 165px;
+    max-height: 32px;
+    object-fit: contain;
+    margin-top: 24px;
+  }
+}

@@ -4,6 +4,7 @@ import Header from './layout/header/Header';
 // import { loadKeys } from './scripts/keys';
 // import { validateToken } from './scripts/tokens';
 import { createDatabase } from './storage/db';
+import Footer from './layout/footer/Footer';
 
 function App() {
   (async () => {
@@ -16,6 +17,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <Router />
+      <Footer />
     </BrowserRouter>
   );
 }
