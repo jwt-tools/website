@@ -12,7 +12,8 @@ const Decoded: React.FC<{
   header?: JWTHeaderParameters;
   payload?: JWTPayload;
   signature: string;
-}> = ({ header, payload }) => {
+  setSecret: (secret: string) => void;
+}> = ({ header, payload, setSecret }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((d: any): boolean => {
     return d instanceof Date && !isNaN(d.getTime());
@@ -78,6 +79,7 @@ const Decoded: React.FC<{
               <input
                 className="decoded__signature__content__secret"
                 placeholder="your-256-bit-secret"
+                onBlur={(e) => setSecret(e.target.value)}
               />
               <br />
               <br /> ) secret base64 encoded

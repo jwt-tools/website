@@ -4,7 +4,9 @@
   border-radius: $border-radius-40;
   padding: 8px;
   width: 300px;
-  margin: 0 auto;
+  margin: 16px auto;
+  text-align: center;
+  font-weight: 500;
 
   &.success {
     color: $color-success;
@@ -13,5 +15,13 @@
   &.failure {
     color: $color-failure;
     border: 1px solid $color-failure;
+  }
+
+  p {
+    margin: 0px;
+  }
+
+  @media screen and (max-width: 700px) {
+    width: calc(100% - 16px);
   }
 }

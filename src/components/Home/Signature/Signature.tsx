@@ -5,7 +5,7 @@ import './Signature.scss';
 
 const Signature: React.FC<{ verified?: boolean }> = ({ verified }) => {
   return (
-    <div className={classNames('singature', {
+    <div className={classNames('signature', {
       success: verified,
       failure: verified === false,
     })}>

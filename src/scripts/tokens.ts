@@ -1,9 +1,10 @@
 import type { JWK, JWTVerifyResult, JWTPayload, JWTHeaderParameters } from 'jose';
 import { decodeJwt, decodeProtectedHeader, importJWK, jwtVerify } from 'jose';
 
-export async function validateToken(jwt: string): Promise<{
+export async function validateToken(jwt: string, secret?: string): Promise<{
   verified: boolean;
   decoded: JWTVerifyResult<JWTPayload>;
+  error?: string;
 }> {
   // TODO:[Racheal] Get key by ID from storage
   // let jwtHeader: ProtectedHeaderParameters | undefined;
@@ -21,6 +22,23 @@ export async function validateToken(jwt: string): Promise<{
     payload: decodedPayload,
   };
 
+  // Verify the token with symmetric encryption
+  if (secret) {
+    try {
+      jwtVerify(jwt, new TextEncoder().encode(secret));
+      return {
+        verified: true,
+        decoded: decodedResponse,
+      };
+    } catch (err) {
+      return {
+        verified: false,
+        decoded: decodedResponse,
+        error: (err as Error).message,
+      };
+    }
+  }
+
   const jwks = (JSON.parse(localStorage.getItem('keys') || '[]') as JWK[]);
   if (jwks.length === 0) {
     return {
@@ -37,10 +55,10 @@ export async function validateToken(jwt: string): Promise<{
   const fulfilled = settled.filter((result) => result.status === 'fulfilled');
 
   if (fulfilled.length === 0) {
-    console.error((rejected[0] as PromiseRejectedResult).reason);
     return {
       verified: false,
       decoded: decodedResponse,
+      error: (rejected[0] as PromiseRejectedResult).reason,
     };
   }
 

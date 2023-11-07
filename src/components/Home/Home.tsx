@@ -19,6 +19,7 @@ const Home: React.FC = () => {
     decoded: JWTVerifyResult;
   } | null>(null);
   const [provider, setProvider] = useState<TokenProvider | null>(null);
+  const [secret, setSecret] = useState('');
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -44,10 +45,10 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     (async (jwt: string) => {
-      const result = await validateToken(jwt);
+      const result = await validateToken(jwt, secret);
       setJwtVerifyResult(result);
     })(token);
-  }, [token]);
+  }, [secret, token]);
 
   return (
     <div className="home">
@@ -77,6 +78,7 @@ const Home: React.FC = () => {
         setToken={setToken}
         token={token}
         provider={provider}
+        setSecret={setSecret}
       />
       <JWKinput />
       <Signature verified={jwtVerifyResult?.verified} />
