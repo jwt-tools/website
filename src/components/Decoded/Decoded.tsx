@@ -21,7 +21,7 @@ const Decoded: React.FC<{
   setToken: (e: string) => void;
   setSecret: (secret: string) => void;
   secret?: string;
-}> = ({ header, payload, expired = false, setSecret, provider, token, secret }) => {
+}> = ({ header, payload, expired = false, setSecret, provider, secret }) => {
   const [showExplained, setShowExplained] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,8 +33,11 @@ const Decoded: React.FC<{
     SigningAlgorithm | null | undefined
   >(hs256);
 
-  const [localSecret, setLocalSecret] = React.useState<string>(secret || `your-${selectedAlgorithm?.bits}-bit-secret`);
-  const [isSecretBase64Encoded, setIsSecretBase64Encoded] = React.useState<boolean>(false);
+  const [localSecret, setLocalSecret] = React.useState<string>(
+    secret || `your-${selectedAlgorithm?.bits}-bit-secret`
+  );
+  const [isSecretBase64Encoded, setIsSecretBase64Encoded] =
+    React.useState<boolean>(false);
 
   useEffect(() => {
     if (isSecretBase64Encoded) {
@@ -46,7 +49,9 @@ const Decoded: React.FC<{
 
   useEffect(() => {
     if (header?.alg) {
-      const algo = algorithms.find(alg => alg.name === header.alg as string);
+      const algo = algorithms.find(
+        (alg) => alg.name === (header.alg as string)
+      );
       setSelectedAlgorithm(algo);
     }
   }, [header?.alg]);
@@ -68,12 +73,7 @@ const Decoded: React.FC<{
                 xmlns="http://www.w3.org/2000/svg"
                 xmlnsXlink="http://www.w3.org/1999/xlink"
               >
-                <g
-                  stroke="none"
-                  strokeWidth="1"
-                  fill="none"
-                  fillRule="evenodd"
-                >
+                <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                   <g transform="translate(-1088, -283)" stroke="#C8AAFF">
                     <g transform="translate(1088, 283)">
                       <path d="M7.89479771,1.40074471 C8.54977605,2.91058086 9.41963471,4.20568886 10.5017098,5.28776392 C11.5838683,6.36992248 12.8790927,7.23983189 14.388729,7.89479771 C12.8788928,8.54977605 11.5837848,9.41963471 10.5017098,10.5017098 C9.41963471,11.5837848 8.54977605,12.8788928 7.89467598,14.388729 C7.23969763,12.8788928 6.36983898,11.5837848 5.28776392,10.5017098 C4.20568886,9.41963471 2.91058086,8.54977605 1.40074471,7.89467598 C2.91058086,7.23969763 4.20568886,6.36983898 5.28776392,5.28776392 C6.36983898,4.20568886 7.23969763,2.91058086 7.89479771,1.40074471 Z"></path>
@@ -93,9 +93,19 @@ const Decoded: React.FC<{
                 Header and token type
               </div>
               <div className="decoded__header__content">
-                <pre>
-                  <code>{JSON.stringify(header, null, 4)}</code>
-                </pre>
+                <div className="decoded__header__content__object">
+                  {'{'}
+                  {Object.keys(header || { error: 'Missing header' }).map(
+                    (key) => {
+                      return (
+                        <div>
+                          "{key}": "{header?.[key] as string}""
+                        </div>
+                      );
+                    }
+                  )}
+                  {'}'}
+                </div>
 
                 <div className="decoded__header__meta">
                   {provider && (
@@ -116,34 +126,40 @@ const Decoded: React.FC<{
               <div className="decoded__signature__title">Verify signature</div>
               <div className="decoded__signature__content">
                 <div className="decoded__signature__algo__select">
-                <AlgoSelect
-                  onChange={(algo) => setSelectedAlgorithm(algo.selectedItem)}
-                  selectedItem={selectedAlgorithm}
-                />
-              </div>
-              {selectedAlgorithm?.type === "HMAC" && (
-                <>
-                  <label htmlFor="sig-secret">
-                    Signing / verification secret
-                  </label>
-                  <br />
-                  <input
-                    id="sig-secret"
-                    className="decoded__signature__content__secret"
-                  value={localSecret}
-                    onInput={(e) => setLocalSecret(e.currentTarget.value)}
-                />
-                <br />
-                <input type="checkbox" id="base64-enc-secret" onChange={(e) => setIsSecretBase64Encoded(e.target.checked)} />{" "}
-                  <label htmlFor="base64-enc-secret">
-                    secret is base64 encoded
-</label>
-                </>
-              )}
+                  <AlgoSelect
+                    onChange={(algo) => setSelectedAlgorithm(algo.selectedItem)}
+                    selectedItem={selectedAlgorithm}
+                  />
+                </div>
+                {selectedAlgorithm?.type === 'HMAC' && (
+                  <>
+                    <label htmlFor="sig-secret">
+                      Signing / verification secret
+                    </label>
+                    <br />
+                    <input
+                      id="sig-secret"
+                      className="decoded__signature__content__secret"
+                      value={localSecret}
+                      onInput={(e) => setLocalSecret(e.currentTarget.value)}
+                    />
+                    <br />
+                    <input
+                      type="checkbox"
+                      id="base64-enc-secret"
+                      onChange={(e) =>
+                        setIsSecretBase64Encoded(e.target.checked)
+                      }
+                    />{' '}
+                    <label htmlFor="base64-enc-secret">
+                      secret is base64 encoded
+                    </label>
+                  </>
+                )}
 
-              {selectedAlgorithm && selectedAlgorithm?.type !== 'HMAC' && (
-                <JWKinput />
-              )}
+                {selectedAlgorithm && selectedAlgorithm?.type !== 'HMAC' && (
+                  <JWKinput />
+                )}
               </div>
               <Tooltip
                 tooltipContent="Copy"
@@ -158,7 +174,7 @@ const Decoded: React.FC<{
                 }
               />
             </div>
-                      </div>
+          </div>
           <div className="decoded__payload">
             <div className="decoded__payload__title">Payload data</div>
             <div className="decoded__payload__content">
@@ -219,7 +235,10 @@ const Decoded: React.FC<{
       </div>
 
       {showExplained && (
-        <Explained token={token} onClose={() => setShowExplained(false)} />
+        <Explained
+          token={JSON.stringify(payload)}
+          onClose={() => setShowExplained(false)}
+        />
       )}
     </>
   );
