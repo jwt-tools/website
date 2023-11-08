@@ -104,10 +104,45 @@ const Header: React.FC = () => {
         <div className="menu">
           <div className="menu-background" onClick={() => setShowMenu(false)} />
           <div className="menu__content">
-            <button className="menu__content__item">JWT Debugger</button>
-            <button className="menu__content__item">History</button>
-            <button className="menu__content__item">What are JWTs?</button>
-            <button className="menu__content__item">Community</button>
+            <button
+              className="menu__content__item"
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+                setShowMenu(false);
+              }}
+            >
+              JWT Debugger
+            </button>
+            <button
+              className="menu__content__item"
+              onClick={() => {
+                scrollToElement('.history');
+                setShowMenu(false);
+              }}
+            >
+              History
+            </button>
+            <button
+              onClick={() => {
+                scrollToElement('.title-education');
+                setShowMenu(false);
+              }}
+              className="menu__content__item"
+            >
+              What are JWTs?
+            </button>
+            <button
+              onClick={() => {
+                scrollToElement('.community');
+                setShowMenu(false);
+              }}
+              className="menu__content__item"
+            >
+              Community
+            </button>
           </div>
         </div>
       )}

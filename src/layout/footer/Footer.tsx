@@ -33,6 +33,7 @@ const Footer: React.FC = () => {
           <a
             href="https://www.linkedin.com/company/rownd/"
             className="footer__follow-us"
+            target="_blank"
           >
             Follow us on <img src={LinkedIn} />
           </a>

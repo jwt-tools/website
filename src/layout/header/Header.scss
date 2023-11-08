@@ -83,7 +83,7 @@ header {
 
 @media screen and (max-width: 850px) {
   header {
-    height: 36px;
+    height: 52px;
     .header-links {
       display: none;
     }
@@ -110,8 +110,8 @@ header {
       border: none;
       margin-right: 14px;
       img {
-        height: 18px;
-        width: 18px;
+        height: 22px;
+        width: 22px;
         filter: invert(100%) sepia(0%) saturate(4111%) hue-rotate(321deg)
           brightness(117%) contrast(87%);
       }
