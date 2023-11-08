@@ -14,8 +14,9 @@ const History: React.FC = () => {
     })();
   }, []);
 
-  const removeToken = (id: number) => {
+  const removeToken = (id?: number) => {
     (async () => {
+      if (!id) return;
       await deleteToken(id);
       const tokens = await getAllTokens();
       setTokens(tokens);

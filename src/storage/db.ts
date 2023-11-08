@@ -2,8 +2,8 @@
 let db: IDBDatabase;
 
 export type Token = {
-    id: number,
-    name: string,
+    id?: number,
+    name?: string,
     created: Date,
     token: string
 }
@@ -84,6 +84,7 @@ const DB_NAME = 'website-db';
 
             request.onsuccess = () => {
                 console.info('Token added to the database');
+                console.info(token);
             };
 
             request.onerror = (e: Event) => {
