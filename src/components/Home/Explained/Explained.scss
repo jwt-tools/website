@@ -1,0 +1,78 @@
+@import '../../../index.scss';
+
+.explained__background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: $color-black;
+  opacity: 0.5;
+  z-index: 22;
+}
+
+.explained {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: calc(100% - 80px);
+  max-width: 512px;
+  background-color: #262626;
+  z-index: 20;
+  padding-top: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 80px;
+  white-space: pre-wrap;
+
+  word-wrap: break-word;
+  overflow-y: auto;
+  z-index: 23;
+
+  .explained__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: $color-white;
+    font-size: $font-size-400;
+    font-weight: 700;
+    margin-bottom: 24px;
+
+    img {
+      margin-left: 4px;
+    }
+  }
+
+  .explained__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    img {
+      height: 18px;
+      width: 18px;
+      filter: invert(98%) sepia(2%) saturate(632%) hue-rotate(175deg)
+        brightness(118%) contrast(87%);
+    }
+  }
+}
+
+@media screen and (max-width: 732px) {
+  .explained {
+    max-width: unset;
+
+    .explained__close {
+      img {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+}
