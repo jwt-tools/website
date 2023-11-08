@@ -100,7 +100,8 @@ const Home: React.FC = () => {
         secret={secret}
       />
       <Signature verified={jwtVerifyResult?.verified} />
-      <History />
+      <History 
+      setToken={setToken}/>
       <Education />
       <Community />
     </div>

@@ -2,9 +2,12 @@ import React from 'react';
 import './History.scss';
 import Trash from '../../assets/trash-can.svg';
 import Edit from '../../assets/edit.svg';
-import { getAllTokens, Token, deleteToken } from '../../storage/db';
+import { getAllTokens, Token, deleteToken, getToken } from '../../storage/db';
 
-const History: React.FC = () => {
+const History: React.FC <{
+  setToken: (e: string) => void;
+}> = ({ setToken }) => {
+
   const [tokens, setTokens] = React.useState<Token[]>([]);
 
   React.useEffect(() => {
@@ -23,6 +26,17 @@ const History: React.FC = () => {
     })();
   };
 
+  const viewToken = (id?: number) => {
+    (async () => {
+      if (!id) return;
+      const savedToken = await getToken(id);
+      console.log(savedToken);
+      if(savedToken){
+        setToken(savedToken.token);
+      }
+    })();
+  };
+
   return (
     <div className="history">
       <h1 className="title-history">History</h1>
@@ -36,7 +50,7 @@ const History: React.FC = () => {
               <img src={Edit} />
             </div>
             <div className="history__item__buttons">
-              <button className="text-button">View</button>
+              <button className="text-button" onClick={() =>viewToken(token.id)}>View</button>
               <img onClick={() => removeToken(token.id)} src={Trash} />
             </div>
           </div>
