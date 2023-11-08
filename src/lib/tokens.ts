@@ -72,23 +72,21 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
   // if the key was found, then verify the token
   const jwk = (JSON.parse(key.key)) as JWK;
 
-  importJwkAndVerify(jwt, jwk)
-    .then((result) => {
-      console.log('Validated token', result);
-    })
-    .catch((err) => {
-      return {
-        verified: false,
-        decoded: decodedResponse,
-        error: (err as Error).message,
-      };
-    });
-
-  return {
-    verified: true,
-    decoded: decodedResponse,
-    expired,
-  };
+  try {
+    await importJwkAndVerify(jwt, jwk);
+    return {
+      verified: true,
+      decoded: decodedResponse,
+      expired,
+    };
+  } catch (err) {
+    return {
+      verified: false,
+      decoded: decodedResponse,
+      expired,
+      error: (err as Error).message,
+    };
+  }
   
 }
 
