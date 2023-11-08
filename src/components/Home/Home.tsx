@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import './Home.scss';
 import Encoded from '../Encoded/Encoded';
-import Decoded from '../Decoded/Decoded';
+import Decoded from '../Decoded/Decoded.tsx';
 import { validateToken } from '../../lib/tokens';
 import type { JWTVerifyResult } from 'jose';
 import { TokenProvider } from '../../providers/engine';

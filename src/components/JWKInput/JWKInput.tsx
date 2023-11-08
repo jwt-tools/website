@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
-import CheckmarkFilled from '../../../assets/checkmark--filled.svg';
-import CloseFilled from '../../../assets/close--filled.svg';
+import CheckmarkFilled from '../../assets/checkmark--filled.svg';
+import CloseFilled from '../../assets/close--filled.svg';
 import './JWKInput.scss';
 import { loadKeys } from '../../lib/keys';
 import classNames from 'classnames';
