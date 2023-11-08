@@ -4,6 +4,7 @@ import Copy from '../../../assets/copy-link.svg';
 import Tooltip from '../../../common/Tooltip/Tooltip';
 import { TokenProvider } from '../../../detector/engine';
 import { JWTHeaderParameters, JWTPayload } from 'jose';
+import JWKinput from '../JWKInput/JWKInput';
 
 const Decoded: React.FC<{
   token: string;
@@ -105,6 +106,7 @@ const Decoded: React.FC<{
               }
             />
           </div>
+          <JWKinput />
         </div>
         <div className="decoded__payload">
           <div className="decoded__payload__title">Payload data</div>

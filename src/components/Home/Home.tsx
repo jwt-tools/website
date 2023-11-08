@@ -6,7 +6,6 @@ import { validateToken } from '../../scripts/tokens';
 import type { JWTVerifyResult } from 'jose';
 import { TokenProvider } from '../../detector/engine';
 import History from './History/History';
-import JWKinput from './JWKInput/JWKInput';
 import Signature from './Signature/Signature';
 import Community from './Community/Community';
 
@@ -80,7 +79,6 @@ const Home: React.FC = () => {
         provider={provider}
         setSecret={setSecret}
       />
-      <JWKinput />
       <Signature verified={jwtVerifyResult?.verified} />
       <History />
       <Community />
