@@ -19,7 +19,7 @@ const Education: React.FC = () => {
   );
   return (
     <div className="education">
-      <h1>What is a JWT?</h1>
+      <h1 className="title-education">What is a JWT?</h1>
 
       {EducationContent.map(({ content, id, image }) => {
         const isOpen = array.includes(id);

@@ -25,7 +25,7 @@ const Encoded: React.FC<{
 
   return (
     <>
-      <h1>Encoded</h1>
+      <h1 className="title-encoded">Encoded</h1>
       <div className="encoded">
         <ContentEditable
           className="encoded__editable"

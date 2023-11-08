@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import JWTImage from '../../assets/JWTIS.svg';
 import Rownd from '../../assets/Rownd-white.svg';
 import './Header.scss';
@@ -8,8 +8,48 @@ import Menu from '../../assets/menu.svg';
 import Close from '../../assets/close.svg';
 
 const Header: React.FC = () => {
-  const { pathname } = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const [activeTab, setActiveTab] = useState('debugger');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Perform actions on scroll/resize
+      let tab = 'debugger';
+
+      const historyElem = document.querySelector('.history');
+      const historyRect = historyElem?.getBoundingClientRect();
+      if (historyRect?.top && historyRect?.top < 50) {
+        tab = 'history';
+      }
+
+      const educationElem = document.querySelector('.title-education');
+      const educationRect = educationElem?.getBoundingClientRect();
+      if (educationRect?.top && educationRect?.top < 50) {
+        tab = 'education';
+      }
+
+      setActiveTab(tab);
+    };
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
+  const scrollToElement = useCallback((selector: string) => {
+    const elem = document.querySelector(selector);
+    const rect = elem?.getBoundingClientRect();
+    const scrollY = window.scrollY;
+
+    const height = (rect?.top || 0) - 50 + scrollY;
+    window.scrollTo({
+      top: height,
+      behavior: 'smooth',
+    });
+  }, []);
+
   return (
     <>
       <header>
@@ -18,20 +58,35 @@ const Header: React.FC = () => {
         </NavLink>
 
         <div className="header-links">
-          <NavLink
+          <button
             className={classnames('header-link', {
-              'header-link-active': pathname === '/',
+              'header-link-active': activeTab === 'debugger',
             })}
-            to={'/'}
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              })
+            }
           >
             JWT Debugger
-          </NavLink>
-          <NavLink className={'header-link'} to={'/history'}>
+          </button>
+          <button
+            onClick={() => scrollToElement('.history')}
+            className={classnames('header-link', {
+              'header-link-active': activeTab === 'history',
+            })}
+          >
             History
-          </NavLink>
-          <NavLink className={'header-link'} to={'/jwt'}>
+          </button>
+          <button
+            onClick={() => scrollToElement('.title-education')}
+            className={classnames('header-link', {
+              'header-link-active': activeTab === 'education',
+            })}
+          >
             What are JWTs?
-          </NavLink>
+          </button>
         </div>
         <NavLink target="_blank" to={'https://rownd.io/'}>
           <div className="header-built-by">

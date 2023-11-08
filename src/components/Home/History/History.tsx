@@ -15,17 +15,16 @@ const History: React.FC = () => {
   }, []);
 
   const removeToken = (id: number) => {
-  
     (async () => {
       await deleteToken(id);
       const tokens = await getAllTokens();
       setTokens(tokens);
     })();
-  }
+  };
 
   return (
     <div className="history">
-      <h1>History</h1>
+      <h1 className="title-history">History</h1>
       {tokens.map((token) => {
         const date = new Date(token.created);
         const time = date.toISOString();
@@ -37,10 +36,7 @@ const History: React.FC = () => {
             </div>
             <div className="history__item__buttons">
               <button className="text-button">View</button>
-              <img 
-                 onClick={()=>removeToken(token.id)}
-                src={Trash} 
-              />
+              <img onClick={() => removeToken(token.id)} src={Trash} />
             </div>
           </div>
         );
