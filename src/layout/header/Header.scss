@@ -115,6 +115,7 @@ header {
 }
 
 .menu {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -153,5 +154,11 @@ header {
     bottom: 0;
     background-color: $color-black;
     opacity: 0.5;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .menu {
+    display: unset;
   }
 }

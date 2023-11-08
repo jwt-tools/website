@@ -9,7 +9,7 @@ import Close from '../../assets/close.svg';
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   return (
     <>
       <header>
