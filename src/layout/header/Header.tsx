@@ -18,13 +18,13 @@ const Header: React.FC = () => {
 
       const historyElem = document.querySelector('.history');
       const historyRect = historyElem?.getBoundingClientRect();
-      if (historyRect?.top && historyRect?.top < 50) {
+      if (historyRect?.top && historyRect?.top < 100) {
         tab = 'history';
       }
 
       const educationElem = document.querySelector('.title-education');
       const educationRect = educationElem?.getBoundingClientRect();
-      if (educationRect?.top && educationRect?.top < 50) {
+      if (educationRect?.top && educationRect?.top < 100) {
         tab = 'education';
       }
 

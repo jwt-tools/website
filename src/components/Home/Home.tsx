@@ -64,7 +64,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
-      <button className="primary-button decoded-button-generate">
+      {/* <button className="primary-button decoded-button-generate">
         Generate example
         <span className="button-image">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
             />
           </svg>
         </span>
-      </button>
+      </button> */}
 
       <Encoded
         header={header}
