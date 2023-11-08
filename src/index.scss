@@ -35,6 +35,10 @@ $border-radius-40: 12px;
 
 .link {
   color: $color-purple;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 #root {
@@ -92,6 +96,21 @@ h1 {
   background-color: transparent;
   cursor: pointer;
   transition-duration: 200ms;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.secondary-button {
+  background-color: $color-purple;
+  color: $color-black;
+  padding: 10px 28px;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  border-radius: $border-radius-32;
+  font-size: $font-size-300;
 
   &:hover {
     opacity: 0.8;

@@ -6,7 +6,7 @@
   align-items: center;
   width: 100%;
   background-color: #1f1f1f;
-  padding: 64px 0px;
+  padding-top: 64px;
 
   .footer__title {
     font-size: $font-size-400;
@@ -17,11 +17,13 @@
   .footer__subtitle {
     font-size: $font-size-300;
     max-width: 600px;
+    margin-left: 16px;
+    margin-right: 16px;
     margin-top: 24px;
     text-align: center;
   }
 
-  img {
+  .footer__img__big {
     max-width: 165px;
     max-height: 32px;
     height: 100%;
@@ -39,5 +41,87 @@
     border-radius: $border-radius-32;
     margin-top: 24px;
     cursor: pointer;
+  }
+
+  .secondary-button {
+    margin-top: 24px;
+    margin-bottom: 72px;
+  }
+
+  .footer__bottom {
+    width: calc(100% - 64px);
+    padding-top: 64px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #181818;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .footer__bottom__built {
+    font-size: $font-size-400;
+    color: $color-white;
+    line-height: 1;
+
+    img {
+      height: 16px;
+      width: 82.4px;
+      margin-left: 4px;
+    }
+    white-space: nowrap;
+    margin-right: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .footer__bottom_right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: $font-size-400;
+    line-height: 1;
+
+    .link {
+      text-decoration: none;
+    }
+
+    .footer__follow-us {
+      border: 1px solid $color-purple;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: row;
+      margin-left: 24px;
+      align-items: center;
+      border-radius: $border-radius-32;
+      font-size: $font-size-400;
+      text-decoration: none;
+      color: $color-white;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      img {
+        height: 24px;
+        width: 24px;
+        margin-left: 4px;
+        filter: invert(100%) sepia(98%) saturate(0%) hue-rotate(302deg)
+          brightness(102%) contrast(103%);
+      }
+    }
+  }
+
+  @media screen and (max-width: 850px) {
+    .footer__bottom {
+      flex-direction: column;
+
+      .footer__bottom_right {
+        margin-top: 16px;
+      }
+    }
   }
 }
