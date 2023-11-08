@@ -9,7 +9,7 @@
         gap: 1;
 
         .select__dropdown__control {
-            background: $color-purple;
+            background: $color-pink;
             border-radius: 25px;
             display: flex;
             justify-content: space-between;
@@ -35,7 +35,7 @@
     }
 
     .select__dropdown__list {
-        background: $color-purple;
+        background: $color-pink;
         color: $color-dark-gray;
         border-radius: 10px;
         width: 100%;
@@ -57,10 +57,10 @@
             list-style: none;
             padding: 5px 20px;
             cursor: pointer;
-            border-top: #c2a1ff 1px solid;
+            border-top: $color-pink-highlight 1px solid;
 
             &:hover, &.selected {
-                background: $color-purple-highlight;
+                background: $color-pink-highlight;
             }
 
             &.selected::after {
