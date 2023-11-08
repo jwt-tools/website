@@ -1,6 +1,9 @@
 import React, { FormEvent, useState } from 'react';
+import CheckmarkFilled from '../../../assets/checkmark--filled.svg';
+import CloseFilled from '../../../assets/close--filled.svg';
 import './JWKInput.scss';
 import { loadKeys } from '../../../scripts/keys';
+import classNames from 'classnames';
 
 const JWKinput: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -44,19 +47,29 @@ const JWKinput: React.FC = () => {
     })();
   })
 
+  const footerIcon = validated ? CheckmarkFilled : error ? CloseFilled : undefined;
+  const footerText = validated ? 'Valid endpoint!' : error ? 'Invalid endpoint!' : '';
+
   return (
     <div id="jwk_endpoint" className="jwk_endpoint">
       <form id="jwk_endpoint_form" className="jwk_endpoint__form" onSubmit={onSubmit}>
         <div className="jwk_endpoint__header">
-        <div className="jwk_endpoint__header__title">Validate with JWK endpoint</div>
+          <label className="jwk_endpoint__header__title">Validate with JWK endpoint</label>
         </div>
         <div className="jwk_endpoint__content">
           <input type="text" name="endpoint" value={endpoint} onChange={(e) => setEndpoint(e.target.value)} onBlur={() => submitKeysEndpoint(endpoint)} placeholder="Enter keys endpoint here"></input>
         </div>
-        <div className="jwk_endpoint__footer">
+        <div className={classNames('jwk_endpoint__footer', {
+          success: validated,
+          failure: !validated,
+        })}>
           {loading && <p>Loading keys...</p>}
-          {validated && <p className="success">Valid endpoint!</p>}
-          {error && <p className="failure">Invalid JWKs endpoint!</p>}
+          {!loading && (
+            <>
+              <img src={footerIcon} />
+              <p>{footerText}</p>
+            </>
+          )}
         </div>
       </form>
     </div>

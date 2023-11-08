@@ -1,18 +1,24 @@
 import React from 'react';
 import classNames from 'classnames';
+import CheckmarkOutline from '../../../assets/checkmark--outline.svg';
+import CloseOutline from '../../../assets/close--outline.svg';
 import './Signature.scss';
 
-
 const Signature: React.FC<{ verified?: boolean }> = ({ verified }) => {
+  const message = verified ? 'Signature verified' : 'Signature unverified!';
+  const icon = verified ? CheckmarkOutline : CloseOutline;
   return (
-    <div className={classNames('signature', {
-      success: verified,
-      failure: verified === false,
-    })}>
-      {verified === undefined && <></>}
-      {verified === true && <p>Signature verified</p>}
-      {verified === false && <p>Signature unverified!</p>}
-    </div>
+    <>
+      {verified !== undefined && (
+        <div className={classNames('signature', {
+          success: verified,
+          failure: verified === false,
+        })}>
+          <img src={icon}/>
+          <p>{message}</p>
+        </div>
+      )}
+    </>
   )
 };
 

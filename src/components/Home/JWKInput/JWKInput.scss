@@ -9,8 +9,10 @@
       font-size: .75rem;
       line-height: 1.66;
       color: $color-medium-gray;
+      margin-bottom: 4px;
     }
   }
+
   &__content {
     input {
       background-color: $color-dark-gray;
@@ -22,15 +24,32 @@
     }
   }
   &__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+      width: 16px;
+      height: auto;
+      margin-right: 8px;
+    }
+
     p {
-      margin-top: 8px;
       font-size: 12px;
     }
-    .success {
+
+    &.success {
       color: $color-success;
+      img {
+        filter: $img-filter-success;
+      }
     }
-    .failure {
+
+    &.failure {
       color: $color-failure;
+      img {
+        filter: $img-filter-failure;
+      }
     }
   }
 }
