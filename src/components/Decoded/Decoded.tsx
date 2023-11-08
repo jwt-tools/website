@@ -99,7 +99,7 @@ const Decoded: React.FC<{
                     (key) => {
                       return (
                         <div>
-                          "{key}": "{header?.[key] as string}""
+                          "{key}": {JSON.stringify(header?.[key])},
                         </div>
                       );
                     }
