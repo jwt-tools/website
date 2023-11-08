@@ -63,7 +63,7 @@
 
       button {
         position: absolute;
-        right: 12px;
+        right: 0px;
         bottom: 0px;
         background-color: #393939;
         display: flex;
@@ -86,6 +86,10 @@
       .education__item__content {
         margin-left: 0px;
         margin-top: 16px;
+      }
+
+      .chevron {
+        display: none;
       }
     }
   }
