@@ -10,7 +10,13 @@ const Community: React.FC = () => {
           <strong>Join the community.</strong> Ask questions, make requests, and
           more.
         </div>
-        <button className="primary-button">Join</button>
+        <a
+          href="https://discord.gg/GMpYjxatmF"
+          target="_blank"
+          className="primary-button"
+        >
+          Join
+        </a>
       </div>
     </div>
   );

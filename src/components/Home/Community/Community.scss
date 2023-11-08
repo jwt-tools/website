@@ -14,12 +14,13 @@
     border-radius: $border-radius-40;
     font-size: $font-size-400;
 
-    button {
+    a {
       background-color: $color-purple;
       color: $color-black;
       padding: 10px 28px;
       outline: none;
       border: none;
+      text-decoration: none;
     }
   }
 }

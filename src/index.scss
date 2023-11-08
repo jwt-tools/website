@@ -33,6 +33,10 @@ $border-radius-40: 12px;
   -webkit-text-size-adjust: 100%;
 }
 
+.link {
+  color: $color-purple;
+}
+
 #root {
   min-height: 100vh;
 }
