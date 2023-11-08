@@ -1,0 +1,75 @@
+@import "../../index.scss";
+
+.select__dropdown__container {
+    position: relative;
+
+    .select__dropdown {
+        display: flex;
+        flex-direction: column;
+        gap: 1;
+
+        .select__dropdown__control {
+            background: $color-purple;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 20px;
+            color: $color-dark-gray;
+            cursor: pointer;
+
+            &::after {
+                content: "⌄";
+                margin-left: 0.5rem;
+                position: absolute;
+                right: 15px;
+                top: 0;
+                color: $color-dark-gray;
+            }
+
+            &.open::after {
+                content: "⌃";
+                top: unset;
+                bottom: 0;
+            }
+        }
+    }
+
+    .select__dropdown__list {
+        background: $color-purple;
+        color: $color-dark-gray;
+        border-radius: 10px;
+        width: 100%;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        margin-top: 0.25rem;
+        overflow: scroll;
+        z-index: 10;
+        list-style: none;
+
+        &.hidden {
+            display: none;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 5px 20px;
+            cursor: pointer;
+            border-top: #c2a1ff 1px solid;
+
+            &:hover, &.selected {
+                background: $color-purple-highlight;
+            }
+
+            &.selected::after {
+                content: "✔";
+                margin-left: 0.5rem;
+                position: absolute;
+                right: 15px;
+                color: $color-dark-gray;
+            }
+        }
+    }
+}

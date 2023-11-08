@@ -1,8 +1,8 @@
 import React from 'react';
 import './History.scss';
-import Trash from '../../../assets/trash-can.svg';
-import Edit from '../../../assets/edit.svg';
-import { getAllTokens, Token, deleteToken } from '../../../storage/db';
+import Trash from '../../assets/trash-can.svg';
+import Edit from '../../assets/edit.svg';
+import { getAllTokens, Token, deleteToken } from '../../storage/db';
 
 const History: React.FC = () => {
   const [tokens, setTokens] = React.useState<Token[]>([]);

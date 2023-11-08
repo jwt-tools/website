@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import CheckmarkFilled from '../../../assets/checkmark--filled.svg';
 import CloseFilled from '../../../assets/close--filled.svg';
 import './JWKInput.scss';
-import { loadKeys } from '../../../scripts/keys';
+import { loadKeys } from '../../lib/keys';
 import classNames from 'classnames';
 
 const JWKinput: React.FC = () => {
@@ -57,7 +57,7 @@ const JWKinput: React.FC = () => {
           <label className="jwk_endpoint__header__title">Validate with JWK endpoint</label>
         </div>
         <div className="jwk_endpoint__content">
-          <input type="text" name="endpoint" value={endpoint} onChange={(e) => setEndpoint(e.target.value)} onBlur={() => submitKeysEndpoint(endpoint)} placeholder="Enter keys endpoint here"></input>
+          <input id="jwk-endpoint" type="text" name="endpoint" value={endpoint} onChange={(e) => setEndpoint(e.target.value)} onBlur={() => submitKeysEndpoint(endpoint)} placeholder="Enter /keys endpoint here"></input>
         </div>
         <div className={classNames('jwk_endpoint__footer', {
           success: validated,
