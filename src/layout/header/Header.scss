@@ -5,20 +5,23 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: #181818;
 
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 10;
 
   .header-img {
-    object-fit: contain;
-    max-height: 20px;
-    max-width: 180px;
-    margin-left: 24px;
-    margin-top: 14px;
+    display: flex;
+    img {
+      object-fit: contain;
+      max-height: 20px;
+      max-width: 180px;
+      margin-left: 24px;
+    }
   }
 
   .header-links {
@@ -58,10 +61,97 @@ header {
       margin-left: 4px;
     }
     white-space: nowrap;
-    margin-top: 13px;
     margin-right: 24px;
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
+
+  .header-menu-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  header {
+    height: 36px;
+    .header-links {
+      display: none;
+    }
+
+    .header-built-by {
+      display: none;
+    }
+
+    .header-img {
+      img {
+        max-height: 16px;
+        max-width: 72px;
+        margin: 10px;
+        margin-left: 14px;
+      }
+    }
+
+    .header-menu-button {
+      display: flex;
+      background-color: transparent;
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      border: none;
+      margin-right: 14px;
+      img {
+        height: 18px;
+        width: 18px;
+        filter: invert(100%) sepia(0%) saturate(4111%) hue-rotate(321deg)
+          brightness(117%) contrast(87%);
+      }
+
+      &:active {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+
+  .menu__content {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .menu__content__item {
+      padding: 22px;
+      color: $color-white;
+      font-size: $font-size-400;
+      line-height: 1.25;
+      outline: none;
+      border: none;
+      border-top: 1px solid #262626;
+      background-color: #181818;
+      cursor: pointer;
+
+      &:active {
+        background-color: #292828;
+      }
+    }
+  }
+
+  .menu-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-black;
+    opacity: 0.5;
   }
 }
