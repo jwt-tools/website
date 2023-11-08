@@ -1,5 +1,10 @@
 import type { JWK, JWTVerifyResult, JWTPayload, JWTHeaderParameters } from 'jose';
 import { decodeJwt, decodeProtectedHeader, errors, importJWK, jwtVerify } from 'jose';
+import * as ed from '@noble/ed25519';
+import { Buffer } from 'buffer';
+import { polyfillEd25519 } from "@yoursunny/webcrypto-ed25519";
+
+polyfillEd25519();
 
 export async function validateToken(jwt: string, secret?: string): Promise<{
   verified: boolean;
@@ -25,7 +30,7 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
 
   let expired = false;
   if (decodedResponse.payload.exp) {
-    expired = new Date() > new Date(decodedResponse.payload.exp * 1000);
+    expired = new Date() >new Date(decodedResponse.payload.exp * 1000);
   }
 
   // Verify the token with symmetric encryption
@@ -87,8 +92,25 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
   };
 }
 
-async function importJwkAndVerify(jwt: string, key: JWK): Promise<JWTVerifyResult<JWTPayload> | null> {
+async function importJwkAndVerify(jwt: string, key: JWK): Promise<any | null> {
   const keyLike = await importJWK(key);
+
+  if (key.alg?.toLowerCase() === 'eddsa') {
+    const { 0: header, 1: payload, 2: sig } = jwt.split('.');
+    // const message = Buffer.from(payload, 'base64').toString('utf-8');
+    const message = Buffer.from(`${header}.${payload}`).toString('hex');
+    const signature = Buffer.from(sig, 'base64').toString('hex');
+
+    const pubKeyBytes = Object.values(keyLike).filter((v) => v instanceof Uint8Array)[0];
+    const pubKey = ed.etc.bytesToHex(pubKeyBytes);
+
+    const isValid = await ed.verifyAsync(signature, message, pubKey);
+    if (!isValid) {
+      throw new Error('eddsa token verification failed');
+    }
+    return;
+  }
+
   try {
     return jwtVerify(jwt, keyLike);
   } catch (err) {
