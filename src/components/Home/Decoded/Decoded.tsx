@@ -19,7 +19,7 @@ const Decoded: React.FC<{
   setToken: (e: string) => void;
   setSecret: (secret: string) => void;
 }> = ({ header, payload, expired = false, setSecret, provider, token }) => {
-  const [showExplained, setShowExplained] = useState(true);
+  const [showExplained, setShowExplained] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((value: any): boolean => {
