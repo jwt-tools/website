@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "18": "^0.0.0",
     "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-contenteditable": "^3.3.7",
@@ -27,6 +28,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "concurrently": "^8.2.2",
+    "date-fns": "^2.30.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",

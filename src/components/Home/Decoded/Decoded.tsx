@@ -5,16 +5,19 @@ import Tooltip from '../../../common/Tooltip/Tooltip';
 import { TokenProvider } from '../../../detector/engine';
 import { JWTHeaderParameters, JWTPayload } from 'jose';
 import JWKinput from '../JWKInput/JWKInput';
+import { format } from 'date-fns';
+import classNames from 'classnames';
 
 const Decoded: React.FC<{
   token: string;
-  setToken: (e: string) => void;
   provider: TokenProvider | null;
+  signature: string;
+  expired?: boolean;
   header?: JWTHeaderParameters;
   payload?: JWTPayload;
-  signature: string;
+  setToken: (e: string) => void;
   setSecret: (secret: string) => void;
-}> = ({ header, payload, setSecret, provider }) => {
+}> = ({ header, payload, expired = false, setSecret, provider }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((value: any): boolean => {
     const d = new Date(value)
@@ -118,6 +121,11 @@ const Decoded: React.FC<{
                   const value = payload?.[key] as string;
                   const isDate = isValidDate(value);
 
+                  let valuePrefix = '';
+                  if (key === 'exp') {
+                    valuePrefix = expired ? 'Expired on ' : 'Valid until ';
+                  }
+
                   return (
                     <div
                       key={`payload-item-${key}`}
@@ -125,8 +133,10 @@ const Decoded: React.FC<{
                     >
                       "{key}": {payload?.[key] as string},{' '}
                       {typeof value === 'number' && isDate && (
-                        <div className="decoded__payload__content__item__date">
-                          {new Date(value * 1000).toString()}
+                        <div className={classNames('decoded__payload__content__item__date', {
+                          'decoded__payload__content__item__date--expired': key === 'exp' && expired === true
+                        })}>
+                          {valuePrefix + format(new Date(value * 1000), 'eee MMM d Y HH:m:s OOOO')}
                         </div>
                       )}
                     </div>

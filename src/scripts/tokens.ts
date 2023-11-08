@@ -1,9 +1,10 @@
 import type { JWK, JWTVerifyResult, JWTPayload, JWTHeaderParameters } from 'jose';
-import { decodeJwt, decodeProtectedHeader, importJWK, jwtVerify } from 'jose';
+import { decodeJwt, decodeProtectedHeader, errors, importJWK, jwtVerify } from 'jose';
 
 export async function validateToken(jwt: string, secret?: string): Promise<{
   verified: boolean;
   decoded: JWTVerifyResult<JWTPayload>;
+  expired: boolean;
   error?: string;
 }> {
   // TODO:[Racheal] Get key by ID from storage
@@ -22,6 +23,11 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
     payload: decodedPayload,
   };
 
+  let expired = false;
+  if (decodedResponse.payload.exp) {
+    expired = new Date() > new Date(decodedResponse.payload.exp * 1000);
+  }
+
   // Verify the token with symmetric encryption
   if (secret) {
     try {
@@ -29,11 +35,21 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
       return {
         verified: true,
         decoded: decodedResponse,
+        expired,
       };
     } catch (err) {
+      if (err instanceof errors.JWTExpired) {
+        return {
+          verified: true,
+          decoded: decodedResponse,
+          expired,
+        };
+      }
+
       return {
         verified: false,
         decoded: decodedResponse,
+        expired,
         error: (err as Error).message,
       };
     }
@@ -44,6 +60,7 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
     return {
       verified: false,
       decoded: decodedResponse,
+      expired,
     };
   }
 
@@ -58,19 +75,26 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
     return {
       verified: false,
       decoded: decodedResponse,
+      expired,
       error: (rejected[0] as PromiseRejectedResult).reason,
     };
   }
 
-  const result = (fulfilled[0] as PromiseFulfilledResult<JWTVerifyResult<JWTPayload>>).value;
-  console.log('Validated token', result);
   return {
     verified: true,
     decoded: decodedResponse,
+    expired,
   };
 }
 
-async function importJwkAndVerify(jwt: string, key: JWK): Promise<JWTVerifyResult<JWTPayload>> {
+async function importJwkAndVerify(jwt: string, key: JWK): Promise<JWTVerifyResult<JWTPayload> | null> {
   const keyLike = await importJWK(key);
-  return jwtVerify(jwt, keyLike);
+  try {
+    return jwtVerify(jwt, keyLike);
+  } catch (err) {
+    if (err instanceof errors.JWTExpired) {
+      throw err;
+    }
+    return null;
+  }
 }

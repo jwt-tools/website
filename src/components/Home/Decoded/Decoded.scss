@@ -179,6 +179,10 @@
             color: $color-black;
             border-radius: $border-radius-40;
             user-select: none;
+
+            &--expired {
+              background-color: $color-failure;
+            }
           }
         }
       }

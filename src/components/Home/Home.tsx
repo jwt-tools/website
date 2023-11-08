@@ -15,6 +15,7 @@ const Home: React.FC = () => {
   );
   const [jwtVerifyResult, setJwtVerifyResult] = useState<{
     verified: boolean;
+    expired: boolean;
     decoded: JWTVerifyResult;
   } | null>(null);
   const [provider, setProvider] = useState<TokenProvider | null>(null);
@@ -73,6 +74,7 @@ const Home: React.FC = () => {
       <Decoded
         header={jwtVerifyResult?.decoded.protectedHeader}
         payload={jwtVerifyResult?.decoded.payload}
+        expired={jwtVerifyResult?.expired}
         signature={signature}
         setToken={setToken}
         token={token}
