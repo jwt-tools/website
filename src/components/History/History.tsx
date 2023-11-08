@@ -50,7 +50,10 @@ const History: React.FC <{
               <img src={Edit} />
             </div>
             <div className="history__item__buttons">
-              <button className="text-button" onClick={() =>viewToken(token.id)}>View</button>
+              <button className="text-button" onClick={() => {
+                viewToken(token.id);
+                window.scrollTo({ top:0, behavior: 'smooth'});
+              } }>View</button>
               <img onClick={() => removeToken(token.id)} src={Trash} />
             </div>
           </div>
