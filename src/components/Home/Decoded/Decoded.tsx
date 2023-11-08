@@ -5,7 +5,7 @@ import Tooltip from '../../../common/Tooltip/Tooltip';
 import { TokenProvider } from '../../../detector/engine';
 import { JWTHeaderParameters, JWTPayload } from 'jose';
 import JWKinput from '../JWKInput/JWKInput';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import classNames from 'classnames';
 
 const Decoded: React.FC<{
@@ -20,8 +20,7 @@ const Decoded: React.FC<{
 }> = ({ header, payload, expired = false, setSecret, provider }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((value: any): boolean => {
-    const d = new Date(value)
-    return d instanceof Date && !isNaN(d.getTime());
+    return isValid(value);
   }, []);
 
   return (
@@ -117,8 +116,7 @@ const Decoded: React.FC<{
             {`{`}
             <br />
             {payload
-              ? Object.keys(payload).map((key) => {
-                  const value = payload?.[key] as string;
+              ? Object.entries(payload).map(([key, value]) => {
                   const isDate = isValidDate(value);
 
                   let valuePrefix = '';
@@ -131,12 +129,12 @@ const Decoded: React.FC<{
                       key={`payload-item-${key}`}
                       className="decoded__payload__content__item"
                     >
-                      "{key}": {payload?.[key] as string},{' '}
-                      {typeof value === 'number' && isDate && (
+                      "{key}": {JSON.stringify(value)},{' '}
+                      {isDate && (
                         <div className={classNames('decoded__payload__content__item__date', {
                           'decoded__payload__content__item__date--expired': key === 'exp' && expired === true
                         })}>
-                          {valuePrefix + format(new Date(value * 1000), 'eee MMM d Y HH:m:s OOOO')}
+                          {valuePrefix + format(new Date(value as number * 1000), 'eee MMM d Y HH:m:s OOOO')}
                         </div>
                       )}
                     </div>
