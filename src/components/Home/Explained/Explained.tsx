@@ -29,6 +29,14 @@ const Explained: React.FC<{ onClose: () => void; token: string }> = ({
   };
 
   useEffect(() => {
+    // Disable body scroll
+    document.body.style.overflowY = 'hidden';
+    return () => {
+      document.body.style.overflowY = '';
+    };
+  }, []);
+
+  useEffect(() => {
     if (state == 'init') {
       loadGPTReponse();
     }
