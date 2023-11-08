@@ -14,7 +14,7 @@ const Explained: React.FC<{ onClose: () => void; token: string }> = ({
   const loadGPTReponse = async () => {
     setState('fetching');
     try {
-      const res = await api.get(`/api/gpt?token=${token}`);
+      const res = await api.get(`/api/gpt?token=${token}`, { timeout: 25000 });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const json: any = await res.json();
       const message: string | undefined = json?.choices?.[0]?.message?.content;
