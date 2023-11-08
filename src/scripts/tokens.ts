@@ -3,8 +3,9 @@ import { decodeJwt, decodeProtectedHeader, errors, importJWK, jwtVerify } from '
 import * as ed from '@noble/ed25519';
 import { Buffer } from 'buffer';
 import { polyfillEd25519 } from "@yoursunny/webcrypto-ed25519";
-
+import * as storage from '../storage/db';
 polyfillEd25519();
+
 
 export async function validateToken(jwt: string, secret?: string): Promise<{
   verified: boolean;
@@ -12,19 +13,12 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
   expired: boolean;
   error?: string;
 }> {
-  // TODO:[Racheal] Get key by ID from storage
-  // let jwtHeader: ProtectedHeaderParameters | undefined;
-  // try {
-  //   jwtHeader = decodeProtectedHeader(jwt);
-  // } catch (err) {
-  //   // throw error
-  // }
 
-  // const jwks = storage.getKeysByKid(jwtHeader.kid)
-  const deocdedHeader = decodeProtectedHeader(jwt) as JWTHeaderParameters;
+  const decodedHeader = decodeProtectedHeader(jwt) as JWTHeaderParameters;
   const decodedPayload = decodeJwt(jwt);
+  
   const decodedResponse: JWTVerifyResult = {
-    protectedHeader: deocdedHeader,
+    protectedHeader: decodedHeader,
     payload: decodedPayload,
   };
 
@@ -60,8 +54,14 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
     }
   }
 
-  const jwks = (JSON.parse(localStorage.getItem('keys') || '[]') as JWK[]);
-  if (jwks.length === 0) {
+  // Get key from db
+  let key;
+  if(decodedHeader.kid){
+    key = await storage.getKey(decodedHeader.kid);
+  }
+ 
+  if (!key) {
+    console.log('No key found');
     return {
       verified: false,
       decoded: decodedResponse,
@@ -69,27 +69,27 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
     };
   }
 
-  const settled = await Promise.allSettled(jwks.map((key) => {
-    return importJwkAndVerify(jwt, key);
-  }));
+  // if the key was found, then verify the token
+  const jwk = (JSON.parse(key.key)) as JWK;
 
-  const rejected = settled.filter((result) => result.status === 'rejected');
-  const fulfilled = settled.filter((result) => result.status === 'fulfilled');
-
-  if (fulfilled.length === 0) {
-    return {
-      verified: false,
-      decoded: decodedResponse,
-      expired,
-      error: (rejected[0] as PromiseRejectedResult).reason,
-    };
-  }
+  importJwkAndVerify(jwt, jwk)
+    .then((result) => {
+      console.log('Validated token', result);
+    })
+    .catch((err) => {
+      return {
+        verified: false,
+        decoded: decodedResponse,
+        error: (err as Error).message,
+      };
+    });
 
   return {
     verified: true,
     decoded: decodedResponse,
     expired,
   };
+  
 }
 
 async function importJwkAndVerify(jwt: string, key: JWK): Promise<any | null> {
