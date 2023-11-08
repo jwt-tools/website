@@ -13,7 +13,7 @@ const Decoded: React.FC<{
   payload?: JWTPayload;
   signature: string;
   setSecret: (secret: string) => void;
-}> = ({ header, payload, setSecret }) => {
+}> = ({ header, payload, setSecret, provider }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((value: any): boolean => {
     const d = new Date(value)
@@ -66,6 +66,13 @@ const Decoded: React.FC<{
               <pre>
                 <code>{JSON.stringify(header, null, 4)}</code>
               </pre>
+
+              <div className="decoded__header__meta">
+                {provider && <div className="decoded__header__content__item__provider">
+                  { provider.image && <img className="decoded__header__content__item__provider__icon" src={provider.image} /> }
+                  {provider.name} token
+                </div>}
+              </div>
             </div>
           </div>
           <div className="decoded__signature">

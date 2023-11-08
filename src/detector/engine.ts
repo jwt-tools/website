@@ -4,6 +4,7 @@ import { providers } from './providers';
 export type TokenProvider = {
     name: string;
     url: string;
+    image?: string;
     match: TokenMatch[];
     claims: ClaimMatcher;
 }
