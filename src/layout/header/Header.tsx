@@ -88,10 +88,12 @@ const Header: React.FC = () => {
             What are JWTs?
           </button>
         </div>
-        <NavLink target="_blank" to={'https://rownd.io/'}>
-          <div className="header-built-by">
-            Built by <img src={Rownd} alt="Rownd" />
-          </div>
+        <NavLink
+          className="header-built-by"
+          target="_blank"
+          to={'https://rownd.io/'}
+        >
+          Built by <img src={Rownd} alt="Rownd" />
         </NavLink>
         <button
           onClick={() => setShowMenu((prev) => !prev)}

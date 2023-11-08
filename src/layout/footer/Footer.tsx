@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
       <div className="footer__bottom">
         <div className="footer__bottom__built">
           Built by{' '}
-          <NavLink to="https://rownd.io/">
+          <NavLink target="_blank" to="https://rownd.io/">
             <img src={Rownd} />
           </NavLink>
         </div>

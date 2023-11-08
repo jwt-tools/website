@@ -11,8 +11,8 @@ import Community from './Community/Community';
 import Education from './Education/Education';
 import { addToken } from '../../storage/db';
 
-
-const placeholder = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT';
+const placeholder =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT';
 const Home: React.FC = () => {
   const [token, setToken] = useState(placeholder);
   const [jwtVerifyResult, setJwtVerifyResult] = useState<{
@@ -54,8 +54,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     (async (jwt: string) => {
-      if(token===placeholder) return;
-      await addToken( {
+      if (token === placeholder) return;
+      await addToken({
         token: jwt,
         created: new Date(),
       });
