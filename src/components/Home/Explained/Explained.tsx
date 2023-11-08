@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Close from '../../../assets/close.svg';
 import './Explained.scss';
-import api from '../../../scripts/api';
+import api from '../../../lib/api';
 import Sparkle from '../../../assets/AI-sparkle.svg';
 
 const Explained: React.FC<{ onClose: () => void; token: string }> = ({

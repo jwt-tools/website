@@ -1,4 +1,3 @@
-
 let db: IDBDatabase;
 
 export type Token = {
@@ -9,218 +8,214 @@ export type Token = {
 }
 
 export type Jwk = {
-    kid: string,
-    key: string, //stringified jwk
-}
+  kid: string;
+  key: string; //stringified jwk
+};
 
 const DB_VERSION = 2;
-const DB_NAME = 'website-db';
+const DB_NAME = "website-db";
 
-    //init the database
-    export async function createDatabase() {
+//init the database
+export async function createDatabase() {
+  if (!indexedDBSupport())
+    throw new Error("Your browser doesn't support IndexedDB");
 
-        if (!indexedDBSupport()) throw new Error("Your browser doesn't support IndexedBD");
+  const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
-        const request = window.indexedDB.open(DB_NAME, DB_VERSION);
+  // Event handling
+  request.onerror = (e: Event) => {
+    console.error(`IndexedDB error: ${e}`);
+  };
 
-        // Event handling
-        request.onerror = (e: Event) => {
-            console.error(`IndexedDB error: ${e}`);
-        };
+  request.onsuccess = () => {
+    console.info("Successful database connection");
+    db = request.result;
+  };
 
-        request.onsuccess = () => {
-            console.info('Successful database connection');
-            db = request.result;
-        };
+  // This event is only executed the first time the database is created
+  request.onupgradeneeded = () => {
+    console.info("Database created");
+    const db = request.result;
 
-        // This event is only executed the first time the database is created
-        request.onupgradeneeded = () => {
-            console.info('Database created');
-            const db = request.result;
+    // Create an object store to store the tokens
+    if (!db.objectStoreNames.contains("tokens")) {
+      const objectStore = db.createObjectStore("tokens", {
+        keyPath: "id",
+        autoIncrement: true,
+      });
 
-            // Create an object store to store the tokens
-            if(!db.objectStoreNames.contains('tokens')){
-                const objectStore = db.createObjectStore('tokens', { keyPath: 'id', autoIncrement: true });
+      // Create indexes
+      objectStore.createIndex("id", "id", { unique: true }); //Does this need to be specified?
+      objectStore.createIndex("name", "name", { unique: false });
+      objectStore.createIndex("created", "created", { unique: false });
+      objectStore.createIndex("token", "token", { unique: false });
 
-                // Create indexes
-                objectStore.createIndex("id", "id", { unique: true }); //Does this need to be specified?
-                objectStore.createIndex("name", "name", { unique: false });
-                objectStore.createIndex("created", "created", { unique: false });
-                objectStore.createIndex("token", "token", { unique: false });
-
-                // Transaction completed
-                objectStore.transaction.oncomplete = () => {
-                    console.info('object store created: tokens');
-                }
-            }
-
-            // Create an object store for keys
-        if(!db.objectStoreNames.contains('keys')){
-                const objectStore = db.createObjectStore('keys', { keyPath: 'kid'});
-
-                // Create indexes for jwk props
-                objectStore.createIndex("kid", "kid", { unique: true }); 
-                objectStore.createIndex("key", "key", { unique: false });
-    
-                // Transaction completed
-                objectStore.transaction.oncomplete = () => {
-                    console.info('object store created: keys');
-                }
-        }
-        
-        };
+      // Transaction completed
+      objectStore.transaction.oncomplete = () => {
+        console.info("object store created: tokens");
+      };
     }
 
-    // TOKENS
-    export async function addToken(token: Token) {
-    
-        const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-        dbPromise.onsuccess = () => {
-            db = dbPromise.result;
+    // Create an object store for keys
+    if (!db.objectStoreNames.contains("keys")) {
+      const objectStore = db.createObjectStore("keys", { keyPath: "kid" });
 
-            const transaction = db.transaction('tokens', 'readwrite');
-            const objectStore = transaction.objectStore('tokens');
-            const request = objectStore.add(token);
+      // Create indexes for jwk props
+      objectStore.createIndex("kid", "kid", { unique: true });
+      objectStore.createIndex("key", "key", { unique: false });
 
-            request.onsuccess = () => {
-                console.info('Token added to the database');
-                console.info(token);
-            };
-
-            request.onerror = (e: Event) => {
-                console.error(`IndexedDB error adding token: ${e}`);
-            };
-        }
+      // Transaction completed
+      objectStore.transaction.oncomplete = () => {
+        console.info("object store created: keys");
+      };
     }
+  };
+}
 
-    export async function getToken(id: number): Promise <Token | undefined > {
-    
-        return new Promise((resolve, reject) => {
-            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-            dbPromise.onsuccess = () => {
-                const transaction = db.transaction('tokens', 'readonly');
-                const objectStore = transaction.objectStore('tokens');
-                const request = objectStore.get(id);
+// TOKENS
+export async function addToken(token: Token) {
+  const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+  dbPromise.onsuccess = () => {
+    db = dbPromise.result;
 
-                request.onsuccess = () => {
-                    console.info('Token retrieved from the database');
-                    resolve(request.result);  
-                };
+    const transaction = db.transaction("tokens", "readwrite");
+    const objectStore = transaction.objectStore("tokens");
+    const request = objectStore.add(token);
 
-                request.onerror = (e: Event) => {
-                    console.error(`IndexedDB error retrieving token: ${e}`);
-                    reject(e);
-                };
-            }
-        });
-    }
+    request.onsuccess = () => {
+      console.info("Token added to the database");
+    };
 
-    export async function getAllTokens(): Promise <Token []> {
-        return new Promise((resolve, reject) => {
-            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-            dbPromise.onsuccess = () => {
-                const transaction = db.transaction('tokens', 'readonly');
-                const objectStore = transaction.objectStore('tokens');
-                const request = objectStore.getAll();
+    request.onerror = (e: Event) => {
+      console.error(`IndexedDB error adding token: ${e}`);
+    };
+  };
+}
 
-                request.onsuccess = () => {
-                    console.info('all tokens retrieved from the database');
-                    resolve(request.result);  
-                };
+export async function getToken(id: number): Promise<Token | undefined> {
+  return new Promise((resolve, reject) => {
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+      const transaction = db.transaction("tokens", "readonly");
+      const objectStore = transaction.objectStore("tokens");
+      const request = objectStore.get(id);
 
-                request.onerror = (e) => {
-                    console.error(`IndexedDB error retrieving all tokens: ${e}`);
-                    reject(e);
-                };
-            }
-        });
-    }
+      request.onsuccess = () => {
+        console.info("Token retrieved from the database");
+        resolve(request.result);
+      };
 
-    export async function deleteToken(id: number) {
-        const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-        dbPromise.onsuccess = () => {
-            db = dbPromise.result;
-            const transaction = db.transaction('tokens', 'readwrite');
-            const objectStore = transaction.objectStore('tokens');
-            const request = objectStore.delete(id);
-            
-            request.onsuccess = () => {
-                console.info('Token deleted from the database');
-            };
+      request.onerror = (e: Event) => {
+        console.error(`IndexedDB error retrieving token: ${e}`);
+        reject(e);
+      };
+    };
+  });
+}
 
-            request.onerror = (e: Event) => {
-                console.error(`IndexedDB error deleting token: ${e}`);
-            };
-        }
-    }
+export async function getAllTokens(): Promise<Token[]> {
+  return new Promise((resolve, reject) => {
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+      const transaction = db.transaction("tokens", "readonly");
+      const objectStore = transaction.objectStore("tokens");
+      const request = objectStore.getAll();
 
-    // KEYS
+      request.onsuccess = () => {
+        console.info("all tokens retrieved from the database");
+        resolve(request.result);
+      };
 
-    export async function addKey(jwk: Jwk) {
-    
-        const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-        dbPromise.onsuccess = () => {
-            db = dbPromise.result;
+      request.onerror = (e) => {
+        console.error(`IndexedDB error retrieving all tokens: ${e}`);
+        reject(e);
+      };
+    };
+  });
+}
 
-            const transaction = db.transaction('keys', 'readwrite');
-            const objectStore = transaction.objectStore('keys');
-            const request = objectStore.add(jwk);
-        
-            request.onsuccess = () => {
-                console.info('Key added to the database');
-            };
-        
-            request.onerror = (e: Event) => {
-                console.error(`IndexedDB error adding key: ${e}`);
-            };
+export async function deleteToken(id: number) {
+  const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+  dbPromise.onsuccess = () => {
+    db = dbPromise.result;
+    const transaction = db.transaction("tokens", "readwrite");
+    const objectStore = transaction.objectStore("tokens");
+    const request = objectStore.delete(id);
 
-        }
+    request.onsuccess = () => {
+      console.info("Token deleted from the database");
+    };
 
-    }
+    request.onerror = (e: Event) => {
+      console.error(`IndexedDB error deleting token: ${e}`);
+    };
+  };
+}
 
-    export async function getKey(kid: string): Promise <Jwk | undefined >{
-        return new Promise((resolve, reject) => {
-            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-            dbPromise.onsuccess = () => {
-                db = dbPromise.result;
-                const transaction = db.transaction('keys', 'readonly');
-                const objectStore = transaction.objectStore('keys');
-                const request = objectStore.get(kid);
-            
-                request.onsuccess = () => {
-                    console.info('Key retrieved from the database');
-                    resolve(request.result);  
-                };
+// KEYS
 
-                request.onerror = (e: Event) => {
-                    console.error(`IndexedDB error retrieving key: ${e}`);
-                    reject(e);
-                };
-            }
-        });
-    }
+export async function addKey(jwk: Jwk) {
+  const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+  dbPromise.onsuccess = () => {
+    db = dbPromise.result;
 
-    export async function getAllKeys(): Promise<Jwk[]> {
-        return new Promise((resolve, reject) => {
-            const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-            dbPromise.onsuccess = () => {
-                const transaction = db.transaction('keys', 'readonly');
-                const objectStore = transaction.objectStore('keys');
-                const request = objectStore.getAll();
+    const transaction = db.transaction("keys", "readwrite");
+    const objectStore = transaction.objectStore("keys");
+    const request = objectStore.add(jwk);
 
-                request.onsuccess = () => {
-                    console.info('all keys retrieved from the database');
-                    resolve(request.result);
-                };
+    request.onsuccess = () => {
+      console.info("Key added to the database");
+    };
 
-                request.onerror = (e) => {
-                    console.error(`IndexedDB error retrieving all keys: ${e}`);
-                    reject(e);
-                };
-            };
-        });
-    }
+    request.onerror = (e: Event) => {
+      console.error(`IndexedDB error adding key: ${e}`);
+    };
+  };
+}
 
-function indexedDBSupport(){
-    return 'indexedDB' in window;
+export async function getKey(kid: string): Promise<Jwk | undefined> {
+  return new Promise((resolve, reject) => {
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+      db = dbPromise.result;
+      const transaction = db.transaction("keys", "readonly");
+      const objectStore = transaction.objectStore("keys");
+      const request = objectStore.get(kid);
+
+      request.onsuccess = () => {
+        console.info("Key retrieved from the database");
+        resolve(request.result);
+      };
+
+      request.onerror = (e: Event) => {
+        console.error(`IndexedDB error retrieving key: ${e}`);
+        reject(e);
+      };
+    };
+  });
+}
+
+export async function getAllKeys(): Promise<Jwk[]> {
+  return new Promise((resolve, reject) => {
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+      const transaction = db.transaction("keys", "readonly");
+      const objectStore = transaction.objectStore("keys");
+      const request = objectStore.getAll();
+
+      request.onsuccess = () => {
+        console.info("all keys retrieved from the database");
+        resolve(request.result);
+      };
+
+      request.onerror = (e) => {
+        console.error(`IndexedDB error retrieving all keys: ${e}`);
+        reject(e);
+      };
+    };
+  });
+}
+
+function indexedDBSupport() {
+  return "indexedDB" in window;
 }

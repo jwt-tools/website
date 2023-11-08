@@ -1,4 +1,4 @@
-@import '../../../index.scss';
+@import '../../index.scss';
 
 .jwk_endpoint {
   width: 100%;
@@ -15,11 +15,15 @@
 
   &__content {
     input {
-      background-color: $color-dark-gray;
-      border: 1px solid $color-dark-gray;
-      padding: 12px;
-      border-radius: $border-radius-40;
-      color: $color-white;
+      outline: none;
+      border: 1px solid $color-pink;
+      font-size: $font-size-300;
+      background-color: transparent;
+      color: $color-pink;
+      padding: 3px 10px;
+      border-radius: 12px;
+      width: 70%;
+      max-width: 300px;
       width: calc(100% - 24px);
     }
   }

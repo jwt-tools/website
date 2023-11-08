@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import ContentEditable from 'react-contenteditable';
-import Tooltip from '../../../common/Tooltip/Tooltip';
-import Copy from '../../../assets/copy-link.svg';
-import { TokenProvider, detectProvider } from '../../../detector/engine';
+import Tooltip from '../../common/Tooltip/Tooltip';
+import Copy from '../../assets/copy-link.svg';
+import { TokenProvider, detectProvider } from '../../providers/engine';
 import './Encoded.scss';
 
 const Encoded: React.FC<{

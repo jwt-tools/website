@@ -1,13 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './Decoded.scss';
-import Copy from '../../../assets/copy-link.svg';
-import Tooltip from '../../../common/Tooltip/Tooltip';
-import { TokenProvider } from '../../../detector/engine';
+import Copy from '../../assets/copy-link.svg';
+import Tooltip from '../../common/Tooltip/Tooltip';
+import { TokenProvider } from '../../providers/engine';
 import { JWTHeaderParameters, JWTPayload } from 'jose';
 import JWKinput from '../JWKInput/JWKInput';
 import { format, isValid } from 'date-fns';
 import classNames from 'classnames';
-import Explained from '../Explained/Explained';
+import Explained from '../Home/Explained/Explained';
+import { SigningAlgorithm, algorithms, hs256 } from '../../lib/algorithms';
+import { AlgoSelect } from '../AlgoSelect/AlgoSelect';
 
 const Decoded: React.FC<{
   token: string;
@@ -18,13 +20,36 @@ const Decoded: React.FC<{
   payload?: JWTPayload;
   setToken: (e: string) => void;
   setSecret: (secret: string) => void;
-}> = ({ header, payload, expired = false, setSecret, provider, token }) => {
+  secret?: string;
+}> = ({ header, payload, expired = false, setSecret, provider, token, secret }) => {
   const [showExplained, setShowExplained] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isValidDate = useCallback((value: any): boolean => {
     return isValid(value);
   }, []);
+
+  const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<
+    SigningAlgorithm | null | undefined
+  >(hs256);
+
+  const [localSecret, setLocalSecret] = React.useState<string>(secret || `your-${selectedAlgorithm?.bits}-bit-secret`);
+  const [isSecretBase64Encoded, setIsSecretBase64Encoded] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (isSecretBase64Encoded) {
+      setSecret(btoa(localSecret));
+    } else {
+      setSecret(localSecret);
+    }
+  }, [isSecretBase64Encoded, localSecret, setSecret]);
+
+  useEffect(() => {
+    if (header?.alg) {
+      const algo = algorithms.find(alg => alg.name === header.alg as string);
+      setSelectedAlgorithm(algo);
+    }
+  }, [header?.alg]);
 
   return (
     <>
@@ -45,9 +70,9 @@ const Decoded: React.FC<{
               >
                 <g
                   stroke="none"
-                  stroke-width="1"
+                  strokeWidth="1"
                   fill="none"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                 >
                   <g transform="translate(-1088, -283)" stroke="#C8AAFF">
                     <g transform="translate(1088, 283)">
@@ -90,19 +115,35 @@ const Decoded: React.FC<{
             <div className="decoded__signature">
               <div className="decoded__signature__title">Verify signature</div>
               <div className="decoded__signature__content">
-                HMACSHA256(
-                <br />
-                &nbsp;&nbsp;&nbsp;base64UrlEncode(header) + "." +
-                <br />
-                &nbsp;&nbsp;&nbsp;base64UrlEncode(payload),
-                <br /> <br />{' '}
-                <input
-                  className="decoded__signature__content__secret"
-                  placeholder="your-256-bit-secret"
-                  onBlur={(e) => setSecret(e.target.value)}
+                <div className="decoded__signature__algo__select">
+                <AlgoSelect
+                  onChange={(algo) => setSelectedAlgorithm(algo.selectedItem)}
+                  selectedItem={selectedAlgorithm}
+                />
+              </div>
+              {selectedAlgorithm?.type === "HMAC" && (
+                <>
+                  <label htmlFor="sig-secret">
+                    Signing / verification secret
+                  </label>
+                  <br />
+                  <input
+                    id="sig-secret"
+                    className="decoded__signature__content__secret"
+                  value={localSecret}
+                    onInput={(e) => setLocalSecret(e.currentTarget.value)}
                 />
                 <br />
-                <br /> ) secret base64 encoded
+                <input type="checkbox" id="base64-enc-secret" onChange={(e) => setIsSecretBase64Encoded(e.target.checked)} />{" "}
+                  <label htmlFor="base64-enc-secret">
+                    secret is base64 encoded
+</label>
+                </>
+              )}
+
+              {selectedAlgorithm && selectedAlgorithm?.type !== 'HMAC' && (
+                <JWKinput />
+              )}
               </div>
               <Tooltip
                 tooltipContent="Copy"
@@ -117,8 +158,7 @@ const Decoded: React.FC<{
                 }
               />
             </div>
-            <JWKinput />
-          </div>
+                      </div>
           <div className="decoded__payload">
             <div className="decoded__payload__title">Payload data</div>
             <div className="decoded__payload__content">

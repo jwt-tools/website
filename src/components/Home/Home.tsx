@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import './Home.scss';
-import Encoded from './Encoded/Encoded';
-import Decoded from './Decoded/Decoded';
-import { validateToken } from '../../scripts/tokens';
+import Encoded from '../Encoded/Encoded';
+import Decoded from '../Decoded/Decoded.tsx';
+import { validateToken } from '../../lib/tokens';
 import type { JWTVerifyResult } from 'jose';
-import { TokenProvider } from '../../detector/engine';
-import History from './History/History';
-import Signature from './Signature/Signature';
-import Community from './Community/Community';
+import { TokenProvider } from '../../providers/engine';
+import History from '../History/History';
+import Signature from '../Signature/Signature';
+import Community from '../Community/Community';
 import Education from './Education/Education';
 import { addToken } from '../../storage/db';
 
@@ -97,6 +97,7 @@ const Home: React.FC = () => {
         token={token}
         provider={provider}
         setSecret={setSecret}
+        secret={secret}
       />
       <Signature verified={jwtVerifyResult?.verified} />
       <History />

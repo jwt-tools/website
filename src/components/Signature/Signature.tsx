@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import CheckmarkOutline from '../../../assets/checkmark--outline.svg';
-import CloseOutline from '../../../assets/close--outline.svg';
+import CheckmarkOutline from '../../assets/checkmark--outline.svg';
+import CloseOutline from '../../assets/close--outline.svg';
 import './Signature.scss';
 
 const Signature: React.FC<{ verified?: boolean }> = ({ verified }) => {

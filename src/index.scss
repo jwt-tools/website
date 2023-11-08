@@ -7,6 +7,7 @@ $font-size-400: 1rem;
 $font-size-500: 1.125rem;
 
 $color-purple: #c8aaff;
+$color-purple-highlight: #b496f8;
 $color-green: #bafaeb;
 $color-pink: #ff8ab3;
 $color-success: #d2fa8f;
@@ -118,4 +119,10 @@ h1 {
   &:hover {
     opacity: 0.8;
   }
+}
+
+label {
+  font-size: 0.75rem;
+  line-height: 1.66;
+  color: $color-medium-gray;
 }

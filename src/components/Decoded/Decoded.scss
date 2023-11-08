@@ -1,4 +1,4 @@
-@import '../../../index.scss';
+@import '../../index.scss';
 
 .decoded {
   width: 100%;
@@ -123,14 +123,21 @@
           font-size: $font-size-300;
           height: 100%;
 
+          .decoded__signature__algo__select {
+            width: 150px;
+            position: relative;
+            padding-bottom: 15px;
+          }
+
           .decoded__signature__content__secret {
             outline: none;
             border: 1px solid $color-pink;
             font-size: $font-size-300;
             background-color: transparent;
             color: $color-pink;
-            padding: 1px 10px;
+            padding: 3px 10px;
             border-radius: 12px;
+            width: calc(100% - 24px);
 
             &::placeholder {
               color: $color-pink;
@@ -163,6 +170,7 @@
         height: 100%;
         font-size: $font-size-300;
         line-height: 1.5;
+        font-family: monospace;
 
         .decoded__payload__content__item {
           margin-left: 16px;
