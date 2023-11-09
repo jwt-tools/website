@@ -12,6 +12,9 @@
   min-height: 124px;
   background-color: #393939;
   border-radius: $border-radius-40;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 
   .tooltip {
     position: absolute;
@@ -37,7 +40,7 @@
   }
 
   .encoded__editable {
-    height: calc(100% - 32px);
+    height: 100%;
     padding: 16px;
     color: transparent;
     caret-color: $color-white;
@@ -45,6 +48,7 @@
     border: none;
     font-size: $font-size-500;
     word-break: break-all;
+    flex-grow: 1;
   }
 
   .encoded__overlay {
