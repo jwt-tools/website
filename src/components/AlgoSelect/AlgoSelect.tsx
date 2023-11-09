@@ -2,6 +2,8 @@ import './AlgoSelect.scss';
 import { useSelect, UseSelectStateChange } from 'downshift';
 import cx from 'classnames';
 import { SigningAlgorithm, algorithms } from '../../lib/algorithms';
+import Chevron from '../../assets/arrow-down-sign.svg';
+import Checkmark from '../../assets/checkmark.svg';
 
 export interface AlgoSelectProps {
     onChange?: (changes: UseSelectStateChange<SigningAlgorithm>) => void;
@@ -39,7 +41,7 @@ export function AlgoSelect({
               {...getToggleButtonProps()}
             >
               <span>{selectedItem ? selectedItem.name : 'Algorithm'}</span>
-              {/* <span className="px-2">{isOpen ? <>&#8963;</> : <>&#8964;</>}</span> */}
+              <img alt='chevron' src={Chevron} />
             </div>
           </div>
           <ul
@@ -49,19 +51,23 @@ export function AlgoSelect({
             {...getMenuProps()}
           >
             {isOpen &&
-              algorithms.map((item, index) => (
-                <li
-                  className={cx(
-                    // highlightedIndex === index && 'selected',
-                    selectedItem?.name === item.name && 'selected',
-                    'py-2 px-3 shadow-sm flex flex-col',
-                  )}
-                  key={item.name}
-                  {...getItemProps({item, index})}
-                >
-                  <span>{item.name}</span>
-                </li>
-              ))}
+              algorithms.map((item, index) => {
+                const isSelected = selectedItem?.name === item.name
+                return (
+                  <li
+                    className={cx(
+                      // highlightedIndex === index && 'selected',
+                      isSelected && 'selected',
+                      'py-2 px-3 shadow-sm flex flex-col',
+                    )}
+                    key={item.name}
+                    {...getItemProps({item, index})}
+                  >
+                    <span>{item.name}</span>
+                    {isSelected && <img alt='checkmark' src={Checkmark} />}
+                  </li>
+                )
+              })}
           </ul>
         </div>
       )

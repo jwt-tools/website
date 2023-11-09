@@ -16,20 +16,18 @@
             padding: 5px 20px;
             color: $color-dark-gray;
             cursor: pointer;
+            align-items: center;
 
-            &::after {
-                content: "⌄";
-                margin-left: 0.5rem;
-                position: absolute;
-                right: 15px;
-                top: 0;
-                color: $color-dark-gray;
+            &.open {
+                img {
+                    transform: rotate(180deg);
+                }
             }
 
-            &.open::after {
-                content: "⌃";
-                top: unset;
-                bottom: 0;
+            img {
+                height: 12px;
+                width: 12px;
+                opacity: 0.6;
             }
         }
     }
@@ -43,7 +41,8 @@
         margin: 0;
         padding: 0;
         margin-top: 0.25rem;
-        overflow: scroll;
+        overflow: auto;
+        overflow-x: hidden;
         z-index: 10;
         list-style: none;
 
@@ -53,7 +52,9 @@
 
         li {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             list-style: none;
             padding: 5px 20px;
             cursor: pointer;
@@ -63,13 +64,12 @@
                 background: $color-pink-highlight;
             }
 
-            &.selected::after {
-                content: "✔";
-                margin-left: 0.5rem;
-                position: absolute;
-                right: 15px;
-                color: $color-dark-gray;
+            img {
+                height: 12px;
+                width: 12px;
+                opacity: 0.6;
             }
+
         }
     }
 }
