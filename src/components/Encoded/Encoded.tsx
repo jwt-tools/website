@@ -41,6 +41,13 @@ const Encoded: React.FC<{
             const text = e.target.value;
             setText(text);
           }} // handle innerHTML change
+          onKeyDown={(e) => {
+            const key = e.which;
+            if ([13, 32].includes(key)) {
+              e.stopPropagation();
+              e.preventDefault();
+            }
+          }}
         />
         <div className="encoded__overlay">
           <div
