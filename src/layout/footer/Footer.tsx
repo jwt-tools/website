@@ -27,8 +27,8 @@ const Footer: React.FC = () => {
           </NavLink>
         </div>
         <div className="footer__bottom_right">
-          <a target="_blank" className="link" href="https://docs.rownd.io">
-            Rownd docs
+          <a target="_blank" className="link" href="https://github.com/jwt-tools/website">
+          Open a pull request
           </a>
           <a
             href="https://www.linkedin.com/company/rownd/"

@@ -89,6 +89,7 @@ const Encoded: React.FC<{
           }
         />
       </div>
+      <div className='encoded__footer'>Note: JWTs are powerful credentials. Be mindful where you share them, as we perform all validation and debugging on the client side and do not retain token records.</div>
     </>
   );
 };

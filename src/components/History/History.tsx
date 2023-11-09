@@ -39,6 +39,9 @@ const History: React.FC<{
   return (
     <div className="history">
       <h1 className="title-history">History</h1>
+      {
+        tokens.length === 0 && <div className='history__empty-state'>No history to show</div>
+      }
       {tokens.map((token) => {
         const date = new Date(token.created);
         const time = date.toISOString();

@@ -1,5 +1,11 @@
 @import '../../index.scss';
 
+.encoded__footer {
+  font-size: $font-size-150;
+  margin-top: 8px;
+  color: #a1a1a1;
+}
+
 .encoded {
   position: relative;
   width: 100%;
