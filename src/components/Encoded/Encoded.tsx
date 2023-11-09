@@ -84,6 +84,7 @@ const Encoded: React.FC<{
               onClick={() => navigator.clipboard.writeText(token)}
               src={Copy}
               className="encoded__copy"
+              alt="copy"
             />
           }
         />

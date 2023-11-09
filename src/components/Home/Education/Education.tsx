@@ -56,6 +56,7 @@ const Education: React.FC = () => {
               className={classNames('chevron', {
                 'chevron--open': isOpen,
               })}
+              alt="chevron"
             />
           </div>
         );

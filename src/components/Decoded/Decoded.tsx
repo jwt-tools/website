@@ -114,6 +114,7 @@ const Decoded: React.FC<{
                         <img
                           className="decoded__header__content__item__provider__icon"
                           src={provider.image}
+                          alt="provider"
                         />
                       )}
                       {provider.name} token
@@ -170,6 +171,7 @@ const Decoded: React.FC<{
                     }
                     src={Copy}
                     className="home__encoded__copy"
+                    alt="copy"
                   />
                 }
               />
@@ -227,6 +229,7 @@ const Decoded: React.FC<{
                   }
                   src={Copy}
                   className="home__encoded__copy"
+                  alt="copy"
                 />
               }
             />
