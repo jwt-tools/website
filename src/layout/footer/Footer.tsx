@@ -12,8 +12,8 @@ const Footer: React.FC = () => {
         <img className="footer__img__big" src={Rownd} alt="Rownd" />
       </NavLink>
       <div className="footer__subtitle">
-        Securely implement frictionless authentication with JWTs on
-        any stack and any device in less than 10 minutes.
+        Securely implement frictionless authentication with JWTs on any stack
+        and any device in less than 10 minutes.
       </div>
       <a target="_blank" href="https://rownd.io/" className="secondary-button">
         Get started for free
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         <div className="footer__bottom__built">
           Built by{' '}
           <NavLink target="_blank" to="https://rownd.io/">
-            <img src={Rownd} />
+            <img src={Rownd} alt="rownd" />
           </NavLink>
         </div>
         <div className="footer__bottom_right">
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
             className="footer__follow-us"
             target="_blank"
           >
-            Follow us on <img src={LinkedIn} />
+            Follow us on <img src={LinkedIn} alt="linkedIn" />
           </a>
         </div>
       </div>

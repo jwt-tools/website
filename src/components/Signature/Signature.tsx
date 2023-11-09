@@ -10,16 +10,18 @@ const Signature: React.FC<{ verified?: boolean }> = ({ verified }) => {
   return (
     <>
       {verified !== undefined && (
-        <div className={classNames('signature', {
-          success: verified,
-          failure: verified === false,
-        })}>
-          <img src={icon}/>
+        <div
+          className={classNames('signature', {
+            success: verified,
+            failure: verified === false,
+          })}
+        >
+          <img src={icon} alt="verified" />
           <p>{message}</p>
         </div>
       )}
     </>
-  )
+  );
 };
 
 export default Signature;

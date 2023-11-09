@@ -30,7 +30,7 @@ const Education: React.FC = () => {
             })}
             key={`education-${id}`}
           >
-            <img className="education__logo" src={image} />
+            <img alt="education" className="education__logo" src={image} />
             <div
               className={classNames('education__item__content', {
                 'education__item__content--open': isOpen,

@@ -4,10 +4,9 @@ import Trash from '../../assets/trash-can.svg';
 import Edit from '../../assets/edit.svg';
 import { getAllTokens, Token, deleteToken, getToken } from '../../storage/db';
 
-const History: React.FC <{
+const History: React.FC<{
   setToken: (e: string) => void;
 }> = ({ setToken }) => {
-
   const [tokens, setTokens] = React.useState<Token[]>([]);
 
   React.useEffect(() => {
@@ -31,7 +30,7 @@ const History: React.FC <{
       if (!id) return;
       const savedToken = await getToken(id);
       console.log(savedToken);
-      if(savedToken){
+      if (savedToken) {
         setToken(savedToken.token);
       }
     })();
@@ -47,14 +46,23 @@ const History: React.FC <{
           <div key={`history-${time}`} className="history__item">
             <div className="history__item__date">
               {date.toString()}
-              <img src={Edit} />
+              <img src={Edit} alt="edit" />
             </div>
             <div className="history__item__buttons">
-              <button className="text-button" onClick={() => {
-                viewToken(token.id);
-                window.scrollTo({ top:0, behavior: 'smooth'});
-              } }>View</button>
-              <img onClick={() => removeToken(token.id)} src={Trash} />
+              <button
+                className="text-button"
+                onClick={() => {
+                  viewToken(token.id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                View
+              </button>
+              <img
+                alt="delete"
+                onClick={() => removeToken(token.id)}
+                src={Trash}
+              />
             </div>
           </div>
         );

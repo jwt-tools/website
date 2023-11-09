@@ -47,11 +47,11 @@ const Explained: React.FC<{ onClose: () => void; token: string }> = ({
       <div className="explained__background" onClick={onClose} />
       <div className="explained">
         <button className="explained__close" onClick={onClose}>
-          <img src={Close} />
+          <img alt="close" src={Close} />
         </button>
         <div className="explained__title">
           JWT GPT Explained
-          <img src={Sparkle} />
+          <img alt="sparkle" src={Sparkle} />
         </div>
         {(state === 'init' || state === 'fetching') && <h1>Generating...</h1>}
         {gptResponse}

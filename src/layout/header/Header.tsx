@@ -99,7 +99,7 @@ const Header: React.FC = () => {
           onClick={() => setShowMenu((prev) => !prev)}
           className="header-menu-button"
         >
-          <img src={showMenu ? Close : Menu} />
+          <img src={showMenu ? Close : Menu} alt="icon" />
         </button>
       </header>
       {showMenu && (
