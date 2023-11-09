@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: 'JSON Web Token (JWT) Debugger',
-        short_name: 'JWTDebugger',
+        short_name: 'JWT Debugger',
         description: 'This JWT debugging tool is made to help developers quickly understand the header, claims, and signature of any JWT.',
         theme_color: '#262626',
         icons: [
