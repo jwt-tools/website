@@ -35,6 +35,11 @@
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 2px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #474646;
+    }
 
     &.history__item--first {
       border-top-right-radius: $border-radius-32;

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './History.scss';
 import Trash from '../../assets/trash-can.svg';
-import Edit from '../../assets/edit.svg';
-import { getAllTokens, Token, deleteToken, getToken } from '../../storage/db';
+import { getAllTokens, Token, deleteToken } from '../../storage/db';
 import classNames from 'classnames';
 
 const MAX_LENGTH = 4;
@@ -30,16 +29,10 @@ const History: React.FC<{
     })();
   };
 
-  const viewToken = (id?: number) => {
-    (async () => {
-      if (!id) return;
-      const savedToken = await getToken(id);
-      console.log(savedToken);
-      if (savedToken) {
-        setToken(savedToken.token);
-      }
-    })();
-  };
+  const viewToken = useCallback((token: string) => {
+    setToken(token)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [setToken])
 
   return (
     <div className="history">
@@ -54,27 +47,27 @@ const History: React.FC<{
         const isLast = tokens.length === (idx + 1);
 
         return (
-          <div key={`history-${time}`} className={classNames("history__item", {
+          <div onClick={() => viewToken(token.token)} key={`history-${time}`} className={classNames("history__item", {
             "history__item--first": isFirst,
             "history__item--last": isLast && !showAll
           })}>
             <div className="history__item__date">
               {date.toString()}
-              <img src={Edit} alt="edit" />
             </div>
             <div className="history__item__buttons">
               <button
                 className="text-button"
-                onClick={() => {
-                  viewToken(token.id);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => viewToken(token.token)}
               >
                 View
               </button>
               <img
                 alt="delete"
-                onClick={() => removeToken(token.id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  removeToken(token.id)
+                }}
                 src={Trash}
               />
             </div>
