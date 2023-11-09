@@ -6,8 +6,9 @@ import { getAllTokens, Token, deleteToken, getToken } from '../../storage/db';
 
 const History: React.FC<{
   setToken: (e: string) => void;
-}> = ({ setToken }) => {
-  const [tokens, setTokens] = React.useState<Token[]>([]);
+  tokens: Token[];
+  setTokens: (e: Token[]) => void;
+}> = ({ setToken, setTokens, tokens }) => {
 
   React.useEffect(() => {
     (async () => {

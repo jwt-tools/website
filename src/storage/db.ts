@@ -73,23 +73,29 @@ export async function createDatabase() {
 }
 
 // TOKENS
-export async function addToken(token: Token) {
-  const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
-  dbPromise.onsuccess = () => {
-    db = dbPromise.result;
+export async function addToken(token: Token): Promise<Token | null> {
 
-    const transaction = db.transaction("tokens", "readwrite");
-    const objectStore = transaction.objectStore("tokens");
-    const request = objectStore.add(token);
+ return new Promise((resolve, reject) => {
+    const dbPromise = window.indexedDB.open(DB_NAME, DB_VERSION);
+    dbPromise.onsuccess = () => {
+        db = dbPromise.result;
 
-    request.onsuccess = () => {
-      console.info("Token added to the database");
+        const transaction = db.transaction("tokens", "readwrite");
+        const objectStore = transaction.objectStore("tokens");
+        const request = objectStore.add(token);
+
+        request.onsuccess = () => {
+        console.info("Token added to the database");
+        const id = request.result as number
+        resolve({id: id, ...token});
+        };
+
+        request.onerror = (e: Event) => {
+        console.error(`IndexedDB error adding token: ${e}`);
+        reject(e);
+        };
     };
-
-    request.onerror = (e: Event) => {
-      console.error(`IndexedDB error adding token: ${e}`);
-    };
-  };
+    });
 }
 
 export async function getToken(id: number): Promise<Token | undefined> {
