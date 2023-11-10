@@ -78,7 +78,7 @@ const Home: React.FC = () => {
 
  useEffect(() => {
   if (lastSavedToken !== undefined) {
-    setTokens([...tokens, lastSavedToken]);
+    setTokens([lastSavedToken, ...tokens]);
   }
  },[lastSavedToken]);
 

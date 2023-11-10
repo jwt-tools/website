@@ -130,10 +130,17 @@ export class TokensStore implements ITokensObjectStore {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(this.name, "readonly");
       const objectStore = transaction.objectStore(this.name);
-      const request = objectStore.getAll();
+      const request = objectStore.index('created').openCursor(null, 'prev');
 
+      const response: Token[] = [];
       request.onsuccess = () => {
-        resolve(request.result);
+        const cursor = request.result;
+        if (cursor) {
+          response.push(cursor.value);
+          cursor.continue();
+        } else {
+          resolve(response);
+        }
       };
 
       request.onerror = (e) => {
