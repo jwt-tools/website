@@ -3,7 +3,7 @@ import { decodeJwt, decodeProtectedHeader, errors, importJWK, jwtVerify } from '
 import * as ed from '@noble/ed25519';
 import { Buffer } from 'buffer';
 import { polyfillEd25519 } from "@yoursunny/webcrypto-ed25519";
-import * as storage from '../storage/db';
+import storage from '../storage/db';
 polyfillEd25519();
 
 
@@ -56,8 +56,8 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
 
   // Get key from db
   let key;
-  if(decodedHeader.kid){
-    key = await storage.getKey(decodedHeader.kid);
+  if (decodedHeader.kid) {
+    key = await storage.keys.getKeyById(decodedHeader.kid);
   }
  
   if (!key) {

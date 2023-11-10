@@ -1,13 +1,17 @@
 import { BrowserRouter } from 'react-router-dom';
 import Router from './router';
 import Header from './layout/header/Header';
-import { createDatabase } from './storage/db';
 import Footer from './layout/footer/Footer';
+import { addCommonKeysEndpointsToStorage, loadAllKeys } from './lib/keys';
+import { useEffect } from 'react';
 
 function App() {
-  (async () => {
-    await createDatabase();
-  })();
+  useEffect(() => {
+    (async () => {
+      await addCommonKeysEndpointsToStorage();
+      await loadAllKeys();
+    })();
+  }, []);
 
   return (
     <BrowserRouter>

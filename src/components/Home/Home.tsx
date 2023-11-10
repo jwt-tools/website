@@ -9,7 +9,8 @@ import History from '../History/History';
 import Signature from '../Signature/Signature';
 import Community from '../Community/Community';
 import Education from './Education/Education';
-import { addToken, Token } from '../../storage/db';
+import storage from '../../storage/db';
+import { Token } from '../../storage/stores/tokens.ts';
 
 const placeholder =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT';
@@ -59,10 +60,11 @@ const Home: React.FC = () => {
       if (token === placeholder || token === '') return;
 
       //save the tokenId
-      const savedToken = await addToken({
+      const savedToken = await storage.tokens.addToken({
         token: jwt,
         created: new Date(),
       });
+
       if(savedToken?.id){
         setLastSavedToken(savedToken);
       }

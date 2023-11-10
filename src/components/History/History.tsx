@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import './History.scss';
 import Trash from '../../assets/trash-can.svg';
-import { getAllTokens, Token, deleteToken } from '../../storage/db';
 import classNames from 'classnames';
+import storage from '../../storage/db';
+import { Token } from '../../storage/stores/tokens';
 
 const MAX_LENGTH = 4;
 
@@ -15,7 +16,7 @@ const History: React.FC<{
 
   React.useEffect(() => {
     (async () => {
-      const tokens = await getAllTokens();
+      const tokens = await storage.tokens.getAllTokens();
       setTokens(tokens);
     })();
   }, []);
@@ -23,8 +24,8 @@ const History: React.FC<{
   const removeToken = (id?: number) => {
     (async () => {
       if (!id) return;
-      await deleteToken(id);
-      const tokens = await getAllTokens();
+      await storage.tokens.deleteToken(id);
+      const tokens = await storage.tokens.getAllTokens();
       setTokens(tokens);
     })();
   };
