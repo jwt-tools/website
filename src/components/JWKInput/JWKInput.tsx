@@ -88,7 +88,7 @@ const JWKinput: React.FC = () => {
           })}
         >
           {loading && <p>Loading keys...</p>}
-          {!loading && (
+          {!loading && endpoint && (
             <>
               <img alt="icon" src={footerIcon} />
               <p>{footerText}</p>
