@@ -28,9 +28,9 @@ export async function validateToken(jwt: string, secret?: string): Promise<{
   }
 
   // Verify the token with symmetric encryption
-  if (secret) {
+  if (decodedHeader.alg.toLowerCase().startsWith('hs')) {
     try {
-      jwtVerify(jwt, new TextEncoder().encode(secret));
+      await jwtVerify(jwt, new TextEncoder().encode(secret));
       return {
         verified: true,
         decoded: decodedResponse,

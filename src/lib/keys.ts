@@ -7,6 +7,8 @@ const commonEndpoints: string[] = [
   'https://www.googleapis.com/oauth2/v3/certs',
   'https://www.facebook.com/.well-known/oauth/openid/jwks/',
   'https://appleid.apple.com/auth/keys',
+  'https://api.rownd.io/hub/auth/keys',
+  'https://api.us-east-2.dev.rownd.io/hub/auth/keys',
 ];
 
 export async function loadKeys(endpoint: string, saveEndpoint: boolean = true): Promise<JSONWebKeySet> {

@@ -12,10 +12,10 @@ import Education from './Education/Education';
 import storage from '../../storage/db';
 import { Token } from '../../storage/stores/tokens.ts';
 
-const placeholder =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT';
+const placeholderToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
 const Home: React.FC = () => {
-  const [token, setToken] = useState(placeholder);
+  const [token, setToken] = useState(placeholderToken);
   const [tokens, setTokens] = React.useState<Token[]>([]);
   const [lastSavedToken, setLastSavedToken] = React.useState<Token>();
   const [jwtVerifyResult, setJwtVerifyResult] = useState<{
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     (async (jwt: string) => {
-      if (token === placeholder || token === '') return;
+      if (token === placeholderToken || token === '') return;
 
       //save the tokenId
       const savedToken = await storage.tokens.addToken({
@@ -72,11 +72,9 @@ const Home: React.FC = () => {
   }, [token]);
 
  useEffect(() => {
-
-  if(lastSavedToken !== undefined){
+  if (lastSavedToken !== undefined) {
     setTokens([...tokens, lastSavedToken]);
   }
- 
  },[lastSavedToken]);
 
   return (
@@ -118,9 +116,9 @@ const Home: React.FC = () => {
       />
       <Signature verified={jwtVerifyResult?.verified} />
       <History 
-      setToken={setToken}
-      tokens={tokens}
-      setTokens={setTokens}/>
+        setToken={setToken}
+        tokens={tokens}
+        setTokens={setTokens} />
       <Education />
       <Community />
     </div>

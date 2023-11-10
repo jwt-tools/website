@@ -98,7 +98,7 @@ const Decoded: React.FC<{
                   {Object.keys(header || { error: 'Missing header' }).map(
                     (key) => {
                       return (
-                        <div>
+                        <div key={`header-item-${key}`}>
                           "{key}": {JSON.stringify(header?.[key])},
                         </div>
                       );
