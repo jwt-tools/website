@@ -6,6 +6,7 @@ export type Token = {
   name?: string,
   created: Date,
   token: string
+  provider?: string,
 }
 
 export interface ITokensObjectStore {
@@ -38,7 +39,7 @@ export class TokensStore implements ITokensObjectStore {
         objectStore.createIndex("id", "id", { unique: true }); //Does this need to be specified?
         objectStore.createIndex("name", "name", { unique: false });
         objectStore.createIndex("created", "created", { unique: false });
-        objectStore.createIndex("token", "token", { unique: false });
+        objectStore.createIndex("token", "token", { unique: true });
 
         // Transaction completed
         objectStore.transaction.oncomplete = () => {
@@ -55,6 +56,11 @@ export class TokensStore implements ITokensObjectStore {
 
   async addToken(token: Token): Promise<Token> {
     const db = await this.dbProvider.connect();
+
+    const existing = await this._getTokenByEncodedToken(token.token);
+    if (existing) {
+      return token;
+    }
 
     return new Promise<Token>((resolve, reject) => {
       const transaction = db.transaction(this.name, "readwrite");
@@ -93,12 +99,20 @@ export class TokensStore implements ITokensObjectStore {
   }
   
   async getToken(id: number): Promise<Token | undefined> {
+    return this._get('id', id);
+  }
+
+  private async _getTokenByEncodedToken(token: string): Promise<Token | undefined> {
+    return this._get('token', token);
+  }
+
+  async _get(index: string, keyValue: number | string): Promise<Token | undefined> {
     const db = await this.dbProvider.connect();
 
     return new Promise<Token>((resolve, reject) => {
       const transaction = db.transaction(this.name, "readonly");
       const objectStore = transaction.objectStore(this.name);
-      const request = objectStore.get(id);
+      const request = objectStore.index(index).get(keyValue);
 
       request.onsuccess = () => {
         resolve(request.result);

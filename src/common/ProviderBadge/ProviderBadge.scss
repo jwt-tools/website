@@ -1,0 +1,29 @@
+@import '../../index.scss';
+
+.provider {
+  background-color: $color-purple;
+  margin-left: 8px;
+  line-height: 1;
+  height: fit-content;
+  padding: 3px 8px;
+  color: $color-black;
+  border-radius: $border-radius-40;
+  user-select: none;
+  display: flex;
+  align-items: center;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &--unknown {
+    background-color: #262626;
+    color: $color-medium-gray;
+  }
+
+  .provider__icon {
+    height: 20px;
+    width: auto;
+    padding-right: 7px;
+  }
+}

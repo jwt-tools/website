@@ -18,7 +18,7 @@ export class ObjectStore implements IObjectStoreCreator {
   }
 }
 
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const DB_NAME = "website-db";
 
 

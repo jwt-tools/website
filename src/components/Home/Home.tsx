@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './Home.scss';
 import Encoded from '../Encoded/Encoded';
 import Decoded from '../Decoded/Decoded.tsx';
 import { validateToken } from '../../lib/tokens';
 import type { JWTVerifyResult } from 'jose';
-import { TokenProvider } from '../../providers/engine';
+import { TokenProvider, detectProvider } from '../../providers/engine';
 import History from '../History/History';
 import Signature from '../Signature/Signature';
 import Community from '../Community/Community';
@@ -25,6 +25,12 @@ const Home: React.FC = () => {
   } | null>(null);
   const [provider, setProvider] = useState<TokenProvider | null>(null);
   const [secret, setSecret] = useState('');
+
+  const updateToken = useCallback((token: string) => {
+    const provider = detectProvider(token);
+    setProvider(provider);
+    setToken(token);
+  }, [setToken, setProvider]);
 
   const header = useMemo(() => {
     const tokenSplit = token.split('.');
@@ -52,24 +58,23 @@ const Home: React.FC = () => {
     (async (jwt: string) => {
       const result = await validateToken(jwt, secret);
       setJwtVerifyResult(result);
-    })(token);
-  }, [secret, token]);
 
-  useEffect(() => {
-    (async (jwt: string) => {
-      if (token === placeholderToken || token === '') return;
+      if (token === placeholderToken) {
+        return;
+      }
 
-      //save the tokenId
       const savedToken = await storage.tokens.addToken({
         token: jwt,
         created: new Date(),
+        provider: provider?.name,
       });
 
-      if(savedToken?.id){
+      if (savedToken?.id) {
         setLastSavedToken(savedToken);
       }
     })(token);
-  }, [token]);
+  }, [provider?.name, secret, token]);
+
 
  useEffect(() => {
   if (lastSavedToken !== undefined) {
@@ -108,7 +113,7 @@ const Home: React.FC = () => {
         payload={jwtVerifyResult?.decoded.payload}
         expired={jwtVerifyResult?.expired}
         signature={signature}
-        setToken={setToken}
+        setToken={updateToken}
         token={token}
         provider={provider}
         setSecret={setSecret}
@@ -116,7 +121,8 @@ const Home: React.FC = () => {
       />
       <Signature verified={jwtVerifyResult?.verified} />
       <History 
-        setToken={setToken}
+        setToken={updateToken}
+        setProvider={setProvider}
         tokens={tokens}
         setTokens={setTokens} />
       <Education />

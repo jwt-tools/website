@@ -1,14 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import './History.scss';
 import Trash from '../../assets/trash-can.svg';
 import classNames from 'classnames';
 import storage from '../../storage/db';
 import { Token } from '../../storage/stores/tokens';
+import ProviderBadge from '../../common/ProviderBadge/ProviderBadge';
+import './History.scss';
+import { TokenProvider } from '../../providers/engine';
+import format from 'date-fns/format';
 
 const MAX_LENGTH = 4;
 
 const History: React.FC<{
   setToken: (e: string) => void;
+  setProvider: (e: TokenProvider) => void;
   tokens: Token[];
   setTokens: (e: Token[]) => void;
 }> = ({ setToken, setTokens, tokens }) => {
@@ -53,7 +57,10 @@ const History: React.FC<{
             "history__item--last": isLast && !showAll
           })}>
             <div className="history__item__date">
-              {date.toString()}
+              {format(date,'eee MMM d Y HH:mm:ss OOOO')}
+            </div>
+            <div className="history__item__meta">
+              <ProviderBadge name={token.provider} />
             </div>
             <div className="history__item__buttons">
               <button

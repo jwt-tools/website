@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Explained from '../Home/Explained/Explained';
 import { SigningAlgorithm, algorithms, hs256 } from '../../lib/algorithms';
 import { AlgoSelect } from '../AlgoSelect/AlgoSelect';
+import ProviderBadge from '../../common/ProviderBadge/ProviderBadge';
 
 const Decoded: React.FC<{
   token: string;
@@ -108,18 +109,7 @@ const Decoded: React.FC<{
                 </div>
 
                 <div className="decoded__header__meta">
-                  {provider && (
-                    <div className="decoded__header__content__item__provider">
-                      {provider.image && (
-                        <img
-                          className="decoded__header__content__item__provider__icon"
-                          src={provider.image}
-                          alt="provider"
-                        />
-                      )}
-                      {provider.name} token
-                    </div>
-                  )}
+                  <ProviderBadge name={provider?.name} showUnknownProvider={false} />
                 </div>
               </div>
             </div>
@@ -210,7 +200,7 @@ const Decoded: React.FC<{
                             {valuePrefix +
                               format(
                                 new Date((value as number) * 1000),
-                                'eee MMM d Y HH:m:s OOOO'
+                                'eee MMM d Y HH:mm:ss OOOO'
                               )}
                           </div>
                         )}
