@@ -100,7 +100,7 @@ const Decoded: React.FC<{
                     (key) => {
                       return (
                         <div key={`header-item-${key}`}>
-                          "{key}": {JSON.stringify(header?.[key])},
+                          &nbsp;&nbsp;"{key}": {JSON.stringify(header?.[key])},
                         </div>
                       );
                     }
@@ -186,7 +186,7 @@ const Decoded: React.FC<{
                         key={`payload-item-${key}`}
                         className="decoded__payload__content__item"
                       >
-                        "{key}": {JSON.stringify(value)},{' '}
+                        &nbsp;&nbsp;"{key}": {JSON.stringify(value)},{' '}
                         {isDate && (
                           <div
                             className={classNames(
