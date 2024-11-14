@@ -26,6 +26,17 @@ const Home: React.FC = () => {
   const [provider, setProvider] = useState<TokenProvider | null>(null);
   const [secret, setSecret] = useState('');
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const jwtParam = searchParams.get('value');
+
+    if (jwtParam) {
+      setToken(jwtParam);
+      const provider = detectProvider(jwtParam);
+      setProvider(provider);
+    }
+  }, []);
+
   const updateToken = useCallback((token: string) => {
     const provider = detectProvider(token);
     setProvider(provider);
